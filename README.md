@@ -17,3 +17,13 @@ Este repositorio contiene el desarrollo del frontend del sistema, así como la d
   * Se agregaron mensajes de confirmación.
 
 [SPRINT #2](docs/Sprint2/README.md)
+
+
+## SPRINT #3
+
+* Para este sprint se añadio el flujo de manejo de errores y adicionalmente se modificaron las pantallas de
+  * Perfil Capitan
+  * Redistribucion registro
+  * Division crear equipo e invitaciones
+  
+[Sprint #3](docs/Sprint3/README.md)
