@@ -1,16 +1,19 @@
-# React + Vite
+# TECHCUP – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositorio contiene el desarrollo del frontend del sistema, así como la documentación de diseño por sprints.
+## SPRINT #1
 
-Currently, two official plugins are available:
+* Para este sprint diseñamos las primeras interfaces del sistema TECHCUP FÚTBOL.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[SPRINT #1](docs/Sprint1/README.md)
 
-## React Compiler
+## SPRINT #2
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Para este Sprint se realizaron modificaciones en los colores del mockup, el logo de la plataforma, ademas de esto se
+  realizaron algunos cambios en la vizualizacion de las pantallas, tales como:
+  * Redistribución espacio login y registro.
+  * Se uso una pantalla distinta para las alineaciones y la creacion del logo.
+  * Se modifico la visualización el calendario.
+  * Se agregaron mensajes de confirmación.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+[SPRINT #2](docs/Sprint2/README.md)
