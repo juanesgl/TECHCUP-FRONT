@@ -35,4 +35,4 @@ Este repositorio contiene el desarrollo del frontend del sistema, así como la d
   * Redistribucion registro
   * Division crear equipo e invitaciones
   
-[Sprint #3](docs/Sprint3/README.md)
+[SPRINT #3](docs/Sprint3/README.md)
