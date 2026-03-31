@@ -1,6 +1,15 @@
 # TECHCUP – Frontend
 
 Este repositorio contiene el desarrollo del frontend del sistema, así como la documentación de diseño por sprints.
+##  Integrantes del Equipo
+
+| Nombre                                                                   |
+|--------------------------------------------------------------------------|
+| [Andrea Mariana Parra Urrego](https://github.com/marianaparraurrego-oss) |
+| [Isaac David Burgos Cervantes](https://github.com/Isaac1805BC)           |
+| [Juan Esteban Sanchez Garcia](https://github.com/juanesgl)               |
+| [Laura Valentina Santiago Marquez](https://github.com/LauLau1214)        |
+| [Zharik Natalia Mahecha Castillo](https://github.com/199n1)              |
 ## SPRINT #1
 
 * Para este sprint diseñamos las primeras interfaces del sistema TECHCUP FÚTBOL.
