@@ -2,23 +2,25 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import DashboardPage from '../pages/DashboardPage';
-import EstadisticasPage from '../pages/EstadisticasPage';
-import InscripcionesPage from '../pages/IncripcionesPage';
-import CalendarioPage from '../pages/CalendarioPage';
-import LlavesPage from '../pages/LlavesPage';
-import SoportePage from '../pages/SoportePage';
-import ConfiguracionPage from '../pages/ConfiguracionPage';
-import CapitanDashboardPage from '../pages/capitan/CapitanDashboardPage';
-import CrearEquipoPage from '../pages/capitan/CrearEquipoPage';
-import AlineacionPage from '../pages/capitan/AlineacionPage';
-import ConsultarEquipoPage from '../pages/capitan/ConsultarEquipoPage';
-import InvitacionesPage from '../pages/capitan/InvitacionesPage';
-import PagosPage from '../pages/capitan/PagosPage';
-import OrganizadorDashboardPage from '../pages/organizador/OrganizadorDashboardPage';
-import TorneosPage from '../pages/organizador/TorneosPage';
-import CrearTorneoPage from '../pages/organizador/CrearTorneoPage';
-import CalendarioOrganizadorPage from '../pages/organizador/CalendarioOrganizadorPage';
-import PagosOrganizadorPage from '../pages/organizador/PagosOrganizadorPage';
+import StatisticsPage from '../pages/StatisticsPage';
+import RegistrationsPage from '../pages/RegistrationsPage';
+import CalendarPage from '../pages/CalendarPage';
+import KeysPage from '../pages/KeysPage';
+import SoportPage from '../pages/SoportPage';
+import ConfigurationPage from '../pages/ConfigurationPage';
+import CaptainDashboardPage from '../pages/capitan/CaptainDashboardPage';
+import CreateTeamPage from '../pages/organizador/CreateTournamentPage';
+import AlignmentPage from '../pages/capitan/AlignmentPage';
+import ConsultTeamPage from '../pages/capitan/ConsultTeamPage';
+import InvitationsPage from '../pages/capitan/InvitationsPage';
+import PaymentsPage from '../pages/capitan/PaymentsPage';
+import OrganizerDashboardPage from '../pages/organizador/OrganizerDashboardPage';
+import TournamentsPage from '../pages/organizador/TournamentsPage';
+import CreateTournamentPage from '../pages/organizador/CreateTournamentPage';
+import CalendarOrganizerPage from '../pages/organizador/CalendarOrganizerPage';
+import PaymentsOrganizerPage from '../pages/organizador/PaymentsOrganizerPage';
+import RefereeDashboardPage from '../pages/arbitro/RefereeDashboardPage';
+import ConsultTournamentPage from '../pages/organizador/ConsultTournamentPage';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -45,29 +47,33 @@ const AppRoutes = () => {
 
         {/* Rutas jugador */}
         <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
-        <Route path="/inscripciones" element={<PrivateRoute><InscripcionesPage /></PrivateRoute>} />
+        <Route path="/inscripciones" element={<PrivateRoute><RegistrationsPage /></PrivateRoute>} />
+
+        {/* Rutas abitro */}
+        <Route path="/arbitro/dashboard" element={<PrivateRoute><RefereeDashboardPage /></PrivateRoute>} />
 
         {/* Rutas organizador */}
-        <Route path="/organizador/dashboard" element={<PrivateRoute><OrganizadorDashboardPage /></PrivateRoute>} />
-        <Route path="/organizador/torneos" element={<PrivateRoute><TorneosPage /></PrivateRoute>} />
-        <Route path="/organizador/crear-torneo" element={<PrivateRoute><CrearTorneoPage /></PrivateRoute>} />
-        <Route path="/organizador/calendario" element={<PrivateRoute><CalendarioOrganizadorPage /></PrivateRoute>} />
-        <Route path="/organizador/pagos" element={<PrivateRoute><PagosOrganizadorPage /></PrivateRoute>} />
+        <Route path="/organizador/dashboard" element={<PrivateRoute><OrganizerDashboardPage /></PrivateRoute>} />
+        <Route path="/organizador/torneos" element={<PrivateRoute><TournamentsPage /></PrivateRoute>} />
+        <Route path="/organizador/crear-torneo" element={<PrivateRoute><CreateTournamentPage /></PrivateRoute>} />
+        <Route path="/organizador/calendario" element={<PrivateRoute><CalendarOrganizerPage /></PrivateRoute>} />
+        <Route path="/organizador/pagos" element={<PrivateRoute><PaymentsOrganizerPage /></PrivateRoute>} />
+        <Route path="/organizador/consultar-torneo" element={<PrivateRoute><ConsultTournamentPage /></PrivateRoute>} />
 
         {/* Rutas capitán */}
-        <Route path="/capitan/dashboard" element={<PrivateRoute><CapitanDashboardPage /></PrivateRoute>} />
-        <Route path="/capitan/crear-equipo" element={<PrivateRoute><CrearEquipoPage /></PrivateRoute>} />
-        <Route path="/capitan/alineacion" element={<PrivateRoute><AlineacionPage /></PrivateRoute>} />
-        <Route path="/capitan/equipo" element={<PrivateRoute><ConsultarEquipoPage /></PrivateRoute>} />
-        <Route path="/capitan/invitaciones" element={<PrivateRoute><InvitacionesPage /></PrivateRoute>} />
-        <Route path="/pagos" element={<PrivateRoute><PagosPage /></PrivateRoute>} />
+        <Route path="/capitan/dashboard" element={<PrivateRoute><CaptainDashboardPage /></PrivateRoute>} />
+        <Route path="/capitan/crear-equipo" element={<PrivateRoute><CreateTeamPage /></PrivateRoute>} />
+        <Route path="/capitan/alineacion" element={<PrivateRoute><AlignmentPage /></PrivateRoute>} />
+        <Route path="/capitan/equipo" element={<PrivateRoute><ConsultTeamPage /></PrivateRoute>} />
+        <Route path="/capitan/invitaciones" element={<PrivateRoute><InvitationsPage /></PrivateRoute>} />
+        <Route path="/pagos" element={<PrivateRoute><PaymentsPage /></PrivateRoute>} />
 
         {/* Rutas compartidas */}
-        <Route path="/estadisticas" element={<SharedRoute Page={EstadisticasPage} />} />
-        <Route path="/calendario" element={<SharedRoute Page={CalendarioPage} />} />
-        <Route path="/llaves" element={<SharedRoute Page={LlavesPage} />} />
-        <Route path="/soporte" element={<SharedRoute Page={SoportePage} />} />
-        <Route path="/configuracion" element={<SharedRoute Page={ConfiguracionPage} />} />
+        <Route path="/estadisticas" element={<SharedRoute Page={StatisticsPage} />} />
+        <Route path="/calendario" element={<SharedRoute Page={CalendarPage} />} />
+        <Route path="/llaves" element={<SharedRoute Page={KeysPage} />} />
+        <Route path="/soporte" element={<SharedRoute Page={SoportPage} />} />
+        <Route path="/configuracion" element={<SharedRoute Page={ConfigurationPage} />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
