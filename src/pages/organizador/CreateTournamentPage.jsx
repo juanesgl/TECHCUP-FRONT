@@ -5,28 +5,51 @@ import Layout from '../../components/Layout';
 const ModalConfirmar = ({ onCancel, onConfirm }) => (
   <div style={m.overlay}>
     <div style={m.modal}>
-      <div style={m.icon}>?</div>
-      <div style={m.titulo}>¿Estas seguro de iniciar el torneo?</div>
-      <div style={m.desc}>
-        Para ello se cambiara el estado a <span style={{ color: '#2d9e6b', fontWeight: '600' }}>Activo</span> y habilitara las Inscripciones publicas. No podras revertir el diseño o borrarlo.
+      <div style={m.iconWrap}>
+        <span style={m.iconText}>?</span>
       </div>
+      <h2 style={m.titulo}>¿Confirmar creación del torneo?</h2>
+      <p style={m.desc}>
+        El torneo quedará guardado en estado{' '}
+        <span style={{ color: '#888', fontWeight: '600' }}>Borrador</span>. Podrás editarlo o
+        iniciarlo desde la sección <strong>Torneos</strong> cuando estés listo.
+      </p>
       <div style={m.btns}>
         <button style={m.btnCancelar} onClick={onCancel}>Cancelar</button>
-        <button style={m.btnConfirmar} onClick={onConfirm}>Confirmar</button>
+        <button style={m.btnConfirmar} onClick={onConfirm}>Crear torneo</button>
       </div>
     </div>
   </div>
 );
 
 const m = {
-  overlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
-  modal: { backgroundColor: '#ffffff', borderRadius: '16px', padding: '2rem', width: '360px', textAlign: 'center', border: '1px solid #e0e8f0', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' },
-  icon: { width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#e8f5ee', color: '#2d9e6b', fontSize: '1.5rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' },
-  titulo: { fontSize: '1rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '0.75rem' },
-  desc: { fontSize: '0.8rem', color: '#666', marginBottom: '1.5rem', lineHeight: '1.5' },
+  overlay: {
+    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+    backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex',
+    alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+  },
+  modal: {
+    backgroundColor: '#ffffff', borderRadius: '12px',
+    padding: '2.25rem 2rem 1.75rem', width: '340px', textAlign: 'center',
+    boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+  },
+  iconWrap: {
+    width: '52px', height: '52px', borderRadius: '50%',
+    backgroundColor: '#e8f5ee', display: 'flex',
+    alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.1rem',
+  },
+  iconText: { fontSize: '1.5rem', fontWeight: '700', color: '#2d9e6b', lineHeight: 1 },
+  titulo: { fontSize: '1rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '0.75rem', lineHeight: '1.4' },
+  desc: { fontSize: '0.82rem', color: '#666', marginBottom: '1.6rem', lineHeight: '1.6' },
   btns: { display: 'flex', gap: '0.75rem' },
-  btnCancelar: { flex: 1, padding: '0.65rem', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: 'transparent', color: '#666', fontSize: '0.85rem', cursor: 'pointer' },
-  btnConfirmar: { flex: 1, padding: '0.65rem', border: 'none', borderRadius: '8px', backgroundColor: '#2d9e6b', color: '#ffffff', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer' },
+  btnCancelar: {
+    flex: 1, padding: '0.65rem', border: '1.5px solid #ddd', borderRadius: '8px',
+    backgroundColor: 'transparent', color: '#555', fontSize: '0.88rem', fontWeight: '500', cursor: 'pointer',
+  },
+  btnConfirmar: {
+    flex: 1, padding: '0.65rem', border: 'none', borderRadius: '8px',
+    backgroundColor: '#2d9e6b', color: '#ffffff', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer',
+  },
 };
 
 const CrearTorneoPage = () => {
@@ -38,6 +61,14 @@ const CrearTorneoPage = () => {
   const [form, setForm] = useState({ fechaInicio: '', fechaFin: '', cupos: '', costo: '', estado: 'Borrador' });
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleCrearClick = () => {
+    if (!form.fechaInicio || !form.fechaFin || !form.cupos || !form.costo) {
+      alert('Por favor completa todos los campos obligatorios antes de crear el torneo.');
+      return;
+    }
+    setShowModal(true);
+  };
 
   return (
     <Layout userName={user.name} userRole="Organizador" menuType="organizador">
@@ -55,21 +86,21 @@ const CrearTorneoPage = () => {
             <div style={s.cardTitle}>ℹ Información General</div>
             <div style={s.row2}>
               <div style={s.field}>
-                <label style={s.label}>FECHA DE INICIO</label>
+                <label style={s.label}>FECHA DE INICIO *</label>
                 <input type="date" name="fechaInicio" value={form.fechaInicio} onChange={handleChange} style={s.input} />
               </div>
               <div style={s.field}>
-                <label style={s.label}>FECHA DE FIN</label>
+                <label style={s.label}>FECHA DE FIN *</label>
                 <input type="date" name="fechaFin" value={form.fechaFin} onChange={handleChange} style={s.input} />
               </div>
             </div>
             <div style={s.row2}>
               <div style={s.field}>
-                <label style={s.label}>CUPOS DE EQUIPOS</label>
+                <label style={s.label}>CUPOS DE EQUIPOS *</label>
                 <input type="number" name="cupos" value={form.cupos} onChange={handleChange} placeholder="Ej: 16" style={s.input} />
               </div>
               <div style={s.field}>
-                <label style={s.label}>COSTO DE INSCRIPCION</label>
+                <label style={s.label}>COSTO DE INSCRIPCION *</label>
                 <input type="text" name="costo" value={form.costo} onChange={handleChange} placeholder="$ 0.000" style={s.input} />
               </div>
             </div>
@@ -145,7 +176,7 @@ const CrearTorneoPage = () => {
 
       <div style={s.footerBtns}>
         <button style={s.btnCancelar} onClick={() => navigate('/organizador/torneos')}>Cancelar y Borrar</button>
-        <button style={s.btnCrear} onClick={() => setShowModal(true)}>✓ Crear Torneo Oficial</button>
+        <button style={s.btnCrear} onClick={handleCrearClick}>✓ Crear Torneo Oficial</button>
       </div>
 
       {showModal && (
