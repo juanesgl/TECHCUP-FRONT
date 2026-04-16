@@ -8,7 +8,6 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor de request — inyecta el token automáticamente
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -20,7 +19,6 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor de response — manejo centralizado de errores
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
