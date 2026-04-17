@@ -95,7 +95,15 @@ const StatisticsPage = ({menuType}) => {
   ];
 
   return (
-    <Layout userName={user.name} userRole={user.role} menuType = {menuType}>
+    <Layout userName={user.name} userRole={
+      user.role === 'REFEREE'       ? 'Árbitro'
+      : user.role === 'CAPTAIN'     ? 'Capitán'
+      : user.role === 'ORGANIZER'   ? 'Organizador'
+      : user.role === 'ADMINISTRATOR' || user.role === 'ADMIN' ? 'Administrador'
+      : user.role === 'STUDENT'     ? 'Estudiante'
+      : user.role || 'Jugador'
+    } menuType={menuType}>
+
       {/* Título */}
       <div style={s.titleRow}>
         <div>

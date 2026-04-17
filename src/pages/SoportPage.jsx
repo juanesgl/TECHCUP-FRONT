@@ -4,11 +4,12 @@ import Layout from '../components/Layout';
 const SoportPage = ({ menuType }) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-  const [modal, setModal] = useState(null);
-
+  const [modal, setModal]                 = useState(null);
   const [reporteForm, setReporteForm]     = useState({ tipo: '', descripcion: '', email: '' });
   const [contactForm, setContactForm]     = useState({ nombre: '', email: '', mensaje: '' });
   const [enviado, setEnviado]             = useState(false);
+
+  const esOrganizador = menuType === 'organizador';
 
   const faqs = [
     { pregunta: '¿Cómo me inscribo en un equipo?',          respuesta: 'Debes esperar la invitación de un capitán o buscar un equipo disponible.' },
@@ -19,10 +20,14 @@ const SoportPage = ({ menuType }) => {
 
   const handleEnviar = () => {
     setEnviado(true);
-    setTimeout(() => { setEnviado(false); setModal(null); setReporteForm({ tipo: '', descripcion: '', email: '' }); setContactForm({ nombre: '', email: '', mensaje: '' }); }, 2000);
+    setTimeout(() => {
+      setEnviado(false);
+      setModal(null);
+      setReporteForm({ tipo: '', descripcion: '', email: '' });
+      setContactForm({ nombre: '', email: '', mensaje: '' });
+    }, 2000);
   };
 
-  /* ── Modales ── */
   const ModalContactar = () => (
     <div style={s.overlay} onClick={() => setModal(null)}>
       <div style={s.modal} onClick={e => e.stopPropagation()}>
@@ -107,7 +112,6 @@ const SoportPage = ({ menuType }) => {
         <div style={{ ...s.modalIcono, backgroundColor: '#e8f0f7', color: '#3b82f6' }}>📍</div>
         <h3 style={s.modalTitulo}>Contacto del Organizador</h3>
         <p style={s.modalSub}>Información de contacto directo con el organizador del torneo</p>
-
         <div style={s.orgCard}>
           <div style={s.orgAvatar}>JG</div>
           <div>
@@ -115,7 +119,6 @@ const SoportPage = ({ menuType }) => {
             <div style={s.orgRol}>Organizador TECHCUP 2026</div>
           </div>
         </div>
-
         <div style={s.contactoGrid}>
           <div style={s.contactoItem}>
             <span style={s.contactoIcono}>📧</span>
@@ -146,9 +149,7 @@ const SoportPage = ({ menuType }) => {
             </div>
           </div>
         </div>
-
-        <button style={{ ...s.btnEnviar, backgroundColor: '#3b82f6' }}
-          onClick={() => setModal(null)}>
+        <button style={{ ...s.btnEnviar, backgroundColor: '#3b82f6' }} onClick={() => setModal(null)}>
           Entendido
         </button>
       </div>
@@ -160,19 +161,16 @@ const SoportPage = ({ menuType }) => {
       <div style={s.container}>
         <h1 style={s.title}>SOPORTE</h1>
         <p style={s.subtitle}>
-          Aquí encontrarás las respuestas a ciertas preguntas
-          y una línea de comunicación directa.
+          Aquí encontrarás las respuestas a ciertas preguntas y una línea de comunicación directa.
         </p>
 
         <div style={s.mainCard}>
-          {/* Botón contactar */}
           <div style={s.contactRow}>
             <button style={s.contactBtn} onClick={() => setModal('contactar')}>
               💬 Contactar Soporte
             </button>
           </div>
 
-          {/* FAQs */}
           <h2 style={s.faqTitle}>Preguntas frecuentes</h2>
           <div style={s.faqGrid}>
             {faqs.map((faq, i) => (
@@ -183,18 +181,30 @@ const SoportPage = ({ menuType }) => {
             ))}
           </div>
 
-          {/* Sidebar derecho */}
           <div style={s.sideActions}>
             <div style={s.actionRow} onClick={() => setModal('reportar')}>
               <span style={s.actionIcon}>⚠</span>
               <span style={s.actionText}>Reportar un problema</span>
               <span style={s.chevron}>›</span>
             </div>
-            <div style={s.actionRow} onClick={() => setModal('organizador')}>
-              <span style={s.actionIcon}>📍</span>
-              <span style={s.actionText}>Contacto Organizador</span>
-              <span style={s.chevron}>›</span>
-            </div>
+
+            {!esOrganizador && (
+              <div style={s.actionRow} onClick={() => setModal('organizador')}>
+                <span style={s.actionIcon}>📍</span>
+                <span style={s.actionText}>Contacto Organizador</span>
+                <span style={s.chevron}>›</span>
+              </div>
+            )}
+
+            {esOrganizador && (
+              <div style={{ ...s.horarioCard, backgroundColor: '#f0f4ff', border: '1px solid #d0d8f0' }}>
+                <p style={{ ...s.horarioTitle, color: '#3b82f6' }}>TU CONTACTO PÚBLICO</p>
+                <p style={s.horarioText}>📧 organizador@escuelaing.edu.co</p>
+                <p style={s.horarioText}>📱 +57 300 123 4567</p>
+                <p style={s.horarioText}>📍 Bloque F, Oficina 204</p>
+              </div>
+            )}
+
             <div style={s.horarioCard}>
               <p style={s.horarioTitle}>HORARIO DE ATENCIÓN</p>
               <p style={s.horarioText}>Lunes a Viernes: 09:00 – 20:00</p>
@@ -204,9 +214,9 @@ const SoportPage = ({ menuType }) => {
         </div>
       </div>
 
-      {modal === 'contactar'   && <ModalContactar />}
-      {modal === 'reportar'    && <ModalReportar />}
-      {modal === 'organizador' && <ModalOrganizador />}
+      {modal === 'contactar' && <ModalContactar />}
+      {modal === 'reportar'  && <ModalReportar />}
+      {modal === 'organizador' && !esOrganizador && <ModalOrganizador />}
     </Layout>
   );
 };
@@ -232,7 +242,6 @@ const s = {
   horarioTitle: { fontSize: '0.72rem', fontWeight: '700', color: '#2d9e6b', marginBottom: '0.4rem', letterSpacing: '0.5px' },
   horarioText: { fontSize: '0.78rem', color: '#444', lineHeight: '1.6' },
 
-  // Modales
   overlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
   modal: { backgroundColor: '#fff', borderRadius: '16px', padding: '2rem', width: '420px', boxShadow: '0 12px 40px rgba(0,0,0,0.15)', position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.85rem' },
   cerrar: { position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', fontSize: '1rem', color: '#aaa', cursor: 'pointer' },
@@ -245,8 +254,6 @@ const s = {
   textarea: { padding: '0.6rem 0.85rem', border: '1px solid #ddd', borderRadius: '8px', fontSize: '0.85rem', outline: 'none', color: '#333', minHeight: '90px', resize: 'vertical', fontFamily: 'Inter, sans-serif' },
   btnEnviar: { padding: '0.7rem', backgroundColor: '#2d9e6b', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer', marginTop: '0.25rem' },
   exitoBanner: { backgroundColor: '#e8f5ee', color: '#2d9e6b', borderRadius: '8px', padding: '0.85rem', textAlign: 'center', fontSize: '0.88rem', fontWeight: '600' },
-
-  // Modal organizador
   orgCard: { display: 'flex', alignItems: 'center', gap: '0.85rem', backgroundColor: '#f8fafc', borderRadius: '10px', padding: '0.85rem', border: '1px solid #e0e8f0' },
   orgAvatar: { width: '44px', height: '44px', borderRadius: '50%', background: 'linear-gradient(135deg, #1a7a8a, #2d9e6b)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '700', fontSize: '0.9rem', flexShrink: 0 },
   orgNombre: { fontSize: '0.88rem', fontWeight: '700', color: '#1a1a1a' },
