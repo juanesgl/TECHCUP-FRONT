@@ -9,7 +9,7 @@ import KeysPage from '../pages/KeysPage';
 import SoportPage from '../pages/SoportPage';
 import ConfigurationPage from '../pages/ConfigurationPage';
 import CaptainDashboardPage from '../pages/capitan/CaptainDashboardPage';
-import CreateTeamPage from '../pages/organizador/CreateTournamentPage';
+import CreateTeamPage from '../pages/capitan/CreateTeamPage';
 import AlignmentPage from '../pages/capitan/AlignmentPage';
 import ConsultTeamPage from '../pages/capitan/ConsultTeamPage';
 import InvitationsPage from '../pages/capitan/InvitationsPage';
@@ -21,6 +21,9 @@ import CalendarOrganizerPage from '../pages/organizador/CalendarOrganizerPage';
 import PaymentsOrganizerPage from '../pages/organizador/PaymentsOrganizerPage';
 import RefereeDashboardPage from '../pages/arbitro/RefereeDashboardPage';
 import ConsultTournamentPage from '../pages/organizador/ConsultTournamentPage';
+import ViewAlignmentPage from '../pages/capitan/ViewAlignmentPage';
+import EditShieldPage from '../pages/capitan/EditShieldPage';
+import PerfilPage from '../pages/PerfilPage';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -67,6 +70,8 @@ const AppRoutes = () => {
         <Route path="/capitan/equipo" element={<PrivateRoute><ConsultTeamPage /></PrivateRoute>} />
         <Route path="/capitan/invitaciones" element={<PrivateRoute><InvitationsPage /></PrivateRoute>} />
         <Route path="/pagos" element={<PrivateRoute><PaymentsPage /></PrivateRoute>} />
+        <Route path="/capitan/ver-alineacion" element={<PrivateRoute><ViewAlignmentPage /></PrivateRoute>} />
+        <Route path="/capitan/editor-escudo" element={<PrivateRoute><EditShieldPage /></PrivateRoute>} />
 
         {/* Rutas compartidas */}
         <Route path="/estadisticas" element={<SharedRoute Page={StatisticsPage} />} />
@@ -74,6 +79,7 @@ const AppRoutes = () => {
         <Route path="/llaves" element={<SharedRoute Page={KeysPage} />} />
         <Route path="/soporte" element={<SharedRoute Page={SoportPage} />} />
         <Route path="/configuracion" element={<SharedRoute Page={ConfigurationPage} />} />
+        <Route path="/perfil" element={<SharedRoute Page={PerfilPage} />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
