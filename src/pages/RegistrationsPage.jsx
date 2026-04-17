@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
 
-const InscripcionesPage = () => {
+const RegistrationsPage = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const equipos = [
@@ -125,4 +125,4 @@ const s = {
   solicitarBtn: { width: '100%', padding: '0.85rem', backgroundColor: '#2d9e6b', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '0.9rem', fontWeight: '600' },
 };
 
-export default InscripcionesPage;
+export default RegistrationsPage;

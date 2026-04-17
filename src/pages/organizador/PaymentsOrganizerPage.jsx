@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 
-const PagosOrganizadorPage = () => {
+const PaymentsOrganizerPage = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [pagina, setPagina] = useState(1);
   const [pagos, setPagos] = useState([
@@ -138,4 +138,4 @@ const s = {
   paginaBtnActive: { backgroundColor: '#2d9e6b', color: '#ffffff', border: 'none' },
 };
 
-export default PagosOrganizadorPage;
+export default PaymentsOrganizerPage;

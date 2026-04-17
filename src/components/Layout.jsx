@@ -62,6 +62,11 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     { label: 'Centro de Estadísticas', path: '/estadisticas',           icon: '📊' },
     { label: 'Calendario/Partidos',    path: '/organizador/calendario', icon: '📅' },
     { label: 'Llaves',                 path: '/llaves',                 icon: '🏆' },
+  ] : menuType === 'arbitro' ? [
+      { label: 'Inicio',                 path: '/arbitro/dashboard', icon: '⊞' },
+      { label: 'Centro de Estadísticas', path: '/estadisticas',      icon: '📊' },
+      { label: 'Calendario/Partidos',    path: '/calendario',        icon: '📅' },
+      { label: 'Llaves',                 path: '/llaves',            icon: '🏆' },
   ] : [
     { label: 'Inicio',                 path: '/dashboard',     icon: '⊞' },
     { label: 'Inscripciones',          path: '/inscripciones', icon: '📋' },
@@ -78,6 +83,9 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     { label: 'Soporte',            path: '/soporte',           icon: '💬' },
     { label: 'Pagos/Comprobantes', path: '/organizador/pagos', icon: '💳' },
     { label: 'Configuración',      path: '/configuracion',     icon: '⚙'  },
+  ] : menuType === 'arbitro' ? [
+      { label: 'Soporte',       path: '/soporte',       icon: '💬' },
+      { label: 'Configuración', path: '/configuracion', icon: '⚙'  },
   ] : [
     { label: 'Soporte',       path: '/soporte',       icon: '💬' },
     { label: 'Configuración', path: '/configuracion', icon: '⚙'  },

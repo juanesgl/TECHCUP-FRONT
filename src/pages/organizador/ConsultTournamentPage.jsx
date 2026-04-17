@@ -118,7 +118,7 @@ const ls = {
   content: { flex: 1, overflow: 'auto', padding: '1.5rem 2rem', backgroundColor: '#0f1117' },
 };
 
-const ConsultarTorneoPage = () => {
+const ConsultTournamentPage = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const fechas = [
@@ -273,4 +273,4 @@ const s = {
   goleadorSub: { fontSize: '0.7rem', color: '#666' },
 };
 
-export default ConsultarTorneoPage;
+export default ConsultTournamentPage;

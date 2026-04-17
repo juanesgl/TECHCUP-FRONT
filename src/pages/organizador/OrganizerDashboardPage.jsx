@@ -1,6 +1,6 @@
 import Layout from '../../components/Layout';
 
-const OrganizadorDashboardPage = () => {
+const OrganizerDashboardPage = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const torneos = [
@@ -153,4 +153,4 @@ const s = {
   btnAprobar: { flex: 1, padding: '0.35rem', border: 'none', borderRadius: '6px', backgroundColor: '#2d9e6b', color: '#ffffff', fontSize: '0.75rem', cursor: 'pointer', fontWeight: '600' },
 };
 
-export default OrganizadorDashboardPage;
+export default OrganizerDashboardPage;
