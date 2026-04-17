@@ -95,7 +95,7 @@ const TournamentsPage = () => {
     {
       nombre: 'TEMPORADA 2026 – I SEMESTRE',
       fechas: '15 Mar – 26 Jun 2026', equipos: '10 equipos', cancha: 'Cancha A y B',
-      progreso: 58, total: 32, estado: 'En progreso', tipo: 'activo',
+      progreso: 18, total: 32, estado: 'En progreso', tipo: 'activo',
     },
     {
       nombre: 'LIGA JUNIORS 2026',

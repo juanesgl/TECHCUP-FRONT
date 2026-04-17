@@ -20,6 +20,8 @@ import CreateTournamentPage from '../pages/organizador/CreateTournamentPage';
 import CalendarOrganizerPage from '../pages/organizador/CalendarOrganizerPage';
 import PaymentsOrganizerPage from '../pages/organizador/PaymentsOrganizerPage';
 import RefereeDashboardPage from '../pages/arbitro/RefereeDashboardPage';
+import ViewAlignmentPage from '../pages/capitan/ViewAlignmentPage';
+import PerfilPage from '../pages/PerfilPage'
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -64,6 +66,7 @@ const AppRoutes = () => {
         <Route path="/capitan/dashboard" element={<PrivateRoute><CaptainDashboardPage /></PrivateRoute>} />
         <Route path="/capitan/crear-equipo" element={<PrivateRoute><CreateTeamPage /></PrivateRoute>} />
         <Route path="/capitan/alineacion" element={<PrivateRoute><AlignmentPage /></PrivateRoute>} />
+        <Route path="/capitan/ver-alineacion" element={<PrivateRoute><ViewAlignmentPage /></PrivateRoute>} />
         <Route path="/capitan/equipo" element={<PrivateRoute><ConsultTeamPage /></PrivateRoute>} />
         <Route path="/capitan/invitaciones" element={<PrivateRoute><InvitationsPage /></PrivateRoute>} />
         <Route path="/pagos" element={<PrivateRoute><PaymentsPage /></PrivateRoute>} />
@@ -74,6 +77,7 @@ const AppRoutes = () => {
         <Route path="/llaves" element={<SharedRoute Page={KeysPage} />} />
         <Route path="/soporte" element={<SharedRoute Page={SoportPage} />} />
         <Route path="/configuracion" element={<SharedRoute Page={ConfigurationPage} />} />
+        <Route path="/perfil" element={<SharedRoute Page={PerfilPage} />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

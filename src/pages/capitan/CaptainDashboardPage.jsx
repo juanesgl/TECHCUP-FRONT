@@ -3,17 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
 
 const JUGADORES_CANCHA = [
-  { nombre: 'BAUTISTA',  x: 6,  y: 50, color: '#f6c90e', pos: 'POR' },
-  { nombre: 'DOAKES',    x: 20, y: 18, color: '#3b82f6',  pos: 'DEF' },
-  { nombre: 'KEVIN',     x: 20, y: 40, color: '#3b82f6',  pos: 'DEF' },
-  { nombre: 'NORRIS',    x: 20, y: 62, color: '#3b82f6',  pos: 'DEF' },
-  { nombre: 'RAMBO',     x: 20, y: 82, color: '#3b82f6',  pos: 'DEF' },
-  { nombre: 'JACKIE',    x: 45, y: 25, color: '#2d9e6b',  pos: 'MED' },
-  { nombre: 'RAMIREZ',   x: 45, y: 50, color: '#2d9e6b',  pos: 'MED' },
-  { nombre: 'DISEL',     x: 45, y: 75, color: '#2d9e6b',  pos: 'MED' },
-  { nombre: 'SANCHEZ',   x: 72, y: 20, color: '#e53e3e',  pos: 'DEL' },
-  { nombre: 'PITBULL',   x: 72, y: 50, color: '#e53e3e',  pos: 'DEL' },
-  { nombre: 'D. ALVAREZ',x: 72, y: 80, color: '#ffffff',  pos: 'DEL', esCap: true },
+  { nombre: 'BATISTA',   x: 6,  y: 50, color: '#f6c90e', pos: 'POR' },
+  { nombre: 'DOAKES',    x: 25, y: 25, color: '#3b82f6',  pos: 'DEF' },
+  { nombre: 'NORRIS',    x: 25, y: 75, color: '#3b82f6',  pos: 'DEF' },
+  { nombre: 'RAMIREZ',   x: 48, y: 20, color: '#2d9e6b',  pos: 'MED' },
+  { nombre: 'LOPEZ',     x: 48, y: 80, color: '#2d9e6b',  pos: 'MED' },
+  { nombre: 'SANCHEZ',   x: 72, y: 35, color: '#e53e3e',  pos: 'DEL' },
+  { nombre: 'D. ALVAREZ',x: 72, y: 65, color: '#ffffff',  pos: 'DEL', esCap: true },
 ];
 
 const REGLAMENTO = [

@@ -19,19 +19,56 @@ const SEARCH_INDEX = [
   { label: 'Mi perfil',         desc: 'Ver y editar tu perfil',              path: '/perfil',                   role: '*'           },
 ];
 
+const getNotificaciones = (menuType) => {
+  const base = {
+    capitan: [
+      { id: 1, icono: '👥', texto: 'Carlos Martínez aceptó tu invitación al equipo',     tiempo: 'Hace 5 min',   color: '#2d9e6b', leida: false },
+      { id: 2, icono: '💳', texto: 'Pago de inscripción pendiente — vence mañana',        tiempo: 'Hace 1 hora',  color: '#e67e22', leida: false },
+      { id: 3, icono: '📅', texto: 'Partido vs WD-40 programado para MAR 12 a las 14:30',tiempo: 'Hace 2 horas', color: '#9333ea', leida: false },
+      { id: 4, icono: '🟨', texto: 'S. Martínez acumuló 2 amarillas — riesgo de sanción', tiempo: 'Hace 3 horas', color: '#f6c90e', leida: true  },
+      { id: 5, icono: '🏆', texto: 'Tu equipo clasificó a semifinales',                   tiempo: 'Ayer',         color: '#2d9e6b', leida: true  },
+    ],
+    organizador: [
+      { id: 1, icono: '📋', texto: 'Nuevo equipo inscrito: Los Galácticos FC',            tiempo: 'Hace 10 min',  color: '#3b82f6', leida: false },
+      { id: 2, icono: '💳', texto: '3 equipos tienen pagos pendientes de inscripción',    tiempo: 'Hace 30 min',  color: '#e67e22', leida: false },
+      { id: 3, icono: '📅', texto: 'Conflicto de horario en Cancha 2 el MAR 15',          tiempo: 'Hace 1 hora',  color: '#e53e3e', leida: false },
+      { id: 4, icono: '👥', texto: 'El torneo tiene 18/21 equipos inscritos',             tiempo: 'Hace 2 horas', color: '#2d9e6b', leida: true  },
+      { id: 5, icono: '🏆', texto: 'Cuartos de final completados — genera semifinales',   tiempo: 'Ayer',         color: '#9333ea', leida: true  },
+    ],
+    arbitro: [
+      { id: 1, icono: '📅', texto: 'Nuevo partido asignado: DOSW FC vs MBDA — MAR 12',   tiempo: 'Hace 15 min',  color: '#3b82f6', leida: false },
+      { id: 2, icono: '📋', texto: 'Recuerda entregar el reporte del partido del viernes',tiempo: 'Hace 1 hora',  color: '#e67e22', leida: false },
+      { id: 3, icono: '🔄', texto: 'Cambio de cancha: partido del MAR 15 pasa a Cancha 3',tiempo: 'Hace 3 horas', color: '#9333ea', leida: false },
+      { id: 4, icono: '✅', texto: 'Reporte WD-40 vs DOSW FC aprobado por el organizador',tiempo: 'Ayer',         color: '#2d9e6b', leida: true  },
+    ],
+    jugador: [
+      { id: 1, icono: '👥', texto: 'Tu capitán te invitó al equipo Los Peliculeros',      tiempo: 'Hace 5 min',   color: '#2d9e6b', leida: false },
+      { id: 2, icono: '📅', texto: 'Próximo partido vs WD-40 el MAR 12 a las 14:30',     tiempo: 'Hace 2 horas', color: '#9333ea', leida: false },
+      { id: 3, icono: '🏆', texto: 'Tu equipo clasificó a semifinales',                   tiempo: 'Ayer',         color: '#f6c90e', leida: true  },
+    ],
+  };
+  return base[menuType] || base.jugador;
+};
+
 const Layout = ({ children, userName, userRole, menuType }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const fotoUsuario = JSON.parse(localStorage.getItem('user') || '{}').foto || null;
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen]         = useState(false);
+  const [query, setQuery]                     = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showNotif, setShowNotif]             = useState(false);
+  const [notificaciones, setNotificaciones] = useState(() => getNotificaciones(menuType));
+
   const searchRef = useRef(null);
+  const notifRef  = useRef(null);
+
+  const noLeidas = notificaciones.filter(n => !n.leida).length;
 
   const sugerencias = query.trim().length === 0 ? [] : SEARCH_INDEX.filter(item => {
-    const matchRol = item.role === '*' || item.role === menuType;
+    const matchRol   = item.role === '*' || item.role === menuType;
     const matchTexto = item.label.toLowerCase().includes(query.toLowerCase()) ||
                        item.desc.toLowerCase().includes(query.toLowerCase());
     return matchRol && matchTexto;
@@ -41,12 +78,13 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     const handler = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target))
         setShowSuggestions(false);
+      if (notifRef.current && !notifRef.current.contains(e.target))
+        setShowNotif(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Cerrar sidebar al navegar en móvil
   useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
 
   const menuItems = menuType === 'capitan' ? [
@@ -63,10 +101,10 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     { label: 'Calendario/Partidos',    path: '/organizador/calendario', icon: '📅' },
     { label: 'Llaves',                 path: '/llaves',                 icon: '🏆' },
   ] : menuType === 'arbitro' ? [
-      { label: 'Inicio',                 path: '/arbitro/dashboard', icon: '⊞' },
-      { label: 'Centro de Estadísticas', path: '/estadisticas',      icon: '📊' },
-      { label: 'Calendario/Partidos',    path: '/calendario',        icon: '📅' },
-      { label: 'Llaves',                 path: '/llaves',            icon: '🏆' },
+    { label: 'Inicio',                 path: '/arbitro/dashboard', icon: '⊞' },
+    { label: 'Centro de Estadísticas', path: '/estadisticas',      icon: '📊' },
+    { label: 'Calendario/Partidos',    path: '/calendario',        icon: '📅' },
+    { label: 'Llaves',                 path: '/llaves',            icon: '🏆' },
   ] : [
     { label: 'Inicio',                 path: '/dashboard',     icon: '⊞' },
     { label: 'Inscripciones',          path: '/inscripciones', icon: '📋' },
@@ -84,15 +122,16 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     { label: 'Pagos/Comprobantes', path: '/organizador/pagos', icon: '💳' },
     { label: 'Configuración',      path: '/configuracion',     icon: '⚙'  },
   ] : menuType === 'arbitro' ? [
-      { label: 'Soporte',       path: '/soporte',       icon: '💬' },
-      { label: 'Configuración', path: '/configuracion', icon: '⚙'  },
+    { label: 'Soporte',       path: '/soporte',       icon: '💬' },
+    { label: 'Configuración', path: '/configuracion', icon: '⚙'  },
   ] : [
     { label: 'Soporte',       path: '/soporte',       icon: '💬' },
     { label: 'Configuración', path: '/configuracion', icon: '⚙'  },
   ];
 
-  const logoPath = menuType === 'capitan' ? '/capitan/dashboard'
-    : menuType === 'organizador' ? '/organizador/dashboard'
+  const logoPath = menuType === 'capitan'    ? '/capitan/dashboard'
+    : menuType === 'organizador'             ? '/organizador/dashboard'
+    : menuType === 'arbitro'                 ? '/arbitro/dashboard'
     : '/dashboard';
 
   const confirmarLogout = () => {
@@ -151,6 +190,7 @@ const Layout = ({ children, userName, userRole, menuType }) => {
         html, body, #root { height: 100%; overflow: hidden; }
         .menu-item:hover { background-color: rgba(255,255,255,0.15) !important; }
         .suggest-item:hover { background-color: #f0f7ff !important; }
+        .notif-item:hover { background-color: #f8fafb !important; }
 
         @media (max-width: 768px) {
           .sidebar-desktop { display: none !important; }
@@ -166,12 +206,12 @@ const Layout = ({ children, userName, userRole, menuType }) => {
       `}</style>
 
       <div style={st.page}>
-        {/* ── Sidebar desktop ── */}
+        {/* Sidebar desktop */}
         <div className="sidebar-desktop" style={st.sidebar}>
           <SidebarContent />
         </div>
 
-        {/* ── Overlay móvil ── */}
+        {/* Overlay móvil */}
         {sidebarOpen && (
           <div className="sidebar-mobile-overlay" style={st.overlay}
             onClick={() => setSidebarOpen(false)}>
@@ -181,9 +221,7 @@ const Layout = ({ children, userName, userRole, menuType }) => {
           </div>
         )}
 
-        {/* ── Main ── */}
         <div style={st.main}>
-
           {/* Header móvil */}
           <div className="mobile-header" style={st.mobileHeader}>
             <button style={st.hamburger} onClick={() => setSidebarOpen(true)}>☰</button>
@@ -233,8 +271,59 @@ const Layout = ({ children, userName, userRole, menuType }) => {
             </div>
 
             <div className="desktop-user" style={st.headerRight}>
-              <span style={st.bell}>🔔</span>
-              <div style={{ ...st.userInfo, cursor: 'pointer' }} onClick={() => navigate('/perfil')} title="Ver mi perfil">
+
+              {/* ── Campana notificaciones ── */}
+              <div style={{ position: 'relative' }} ref={notifRef}>
+                <div style={st.bellWrap} onClick={() => setShowNotif(v => !v)}>
+                  <span style={st.bell}>🔔</span>
+                  {noLeidas > 0 && <div style={st.notifBadge}>{noLeidas}</div>}
+                </div>
+
+                {showNotif && (
+                  <div style={st.notifPanel}>
+                    <div style={st.notifPanelHeader}>
+                      <span style={st.notifPanelTitulo}>Notificaciones</span>
+                      {noLeidas > 0 && (
+                        <button style={st.notifLeerTodo}
+                          onClick={() => setNotificaciones(prev => prev.map(n => ({ ...n, leida: true })))}>
+                          Marcar todo leído
+                        </button>
+                      )}
+                    </div>
+
+                    <div style={st.notifLista}>
+                      {notificaciones.length === 0
+                        ? <div style={st.notifVacia}>Sin notificaciones</div>
+                        : notificaciones.map(n => (
+                          <div key={n.id} className="notif-item"
+                            style={{ ...st.notifItem, ...(n.leida ? st.notifItemLeida : {}) }}
+                            onClick={() => setNotificaciones(prev =>
+                              prev.map(x => x.id === n.id ? { ...x, leida: true } : x)
+                            )}
+                          >
+                            <div style={{ ...st.notifIcono, backgroundColor: n.color + '22', color: n.color }}>
+                              {n.icono}
+                            </div>
+                            <div style={st.notifTextoWrap}>
+                              <div style={st.notifTexto}>{n.texto}</div>
+                              <div style={st.notifTiempo}>{n.tiempo}</div>
+                            </div>
+                            {!n.leida && <div style={st.notifPunto} />}
+                          </div>
+                        ))
+                      }
+                    </div>
+
+                    <div style={st.notifFooter} onClick={() => setShowNotif(false)}>
+                      Ver todas las notificaciones
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Usuario */}
+              <div style={{ ...st.userInfo, cursor: 'pointer' }}
+                onClick={() => navigate('/perfil')} title="Ver mi perfil">
                 <div>
                   <div style={st.userName}>{userName || 'Usuario'}</div>
                   <div style={st.userRole}>{userRole || 'Jugador'}</div>
@@ -253,7 +342,7 @@ const Layout = ({ children, userName, userRole, menuType }) => {
         </div>
       </div>
 
-      {/* ── Modal logout ── */}
+      {/* Modal logout */}
       {showLogoutModal && (
         <div style={st.logoutOverlay}>
           <div style={st.logoutModal}>
@@ -274,10 +363,7 @@ const Layout = ({ children, userName, userRole, menuType }) => {
 const st = {
   page: { display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', fontFamily: 'Inter, sans-serif', backgroundColor: '#e8f0f7' },
 
-  // Sidebar desktop
   sidebar: { width: '200px', minWidth: '200px', background: 'linear-gradient(180deg, #1a7a8a 0%, #2d9e6b 100%)', display: 'flex', flexDirection: 'column', padding: '1.25rem 0 1rem', height: '100vh', overflow: 'hidden' },
-
-  // Sidebar móvil
   overlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex' },
   sidebarMobile: { width: '240px', background: 'linear-gradient(180deg, #1a7a8a 0%, #2d9e6b 100%)', display: 'flex', flexDirection: 'column', padding: '1.25rem 0 1rem', height: '100vh', overflow: 'hidden' },
 
@@ -293,14 +379,13 @@ const st = {
   logoutContainer: { marginTop: 'auto', padding: '0 1.25rem 0.5rem' },
   logoutBtn: { width: '100%', padding: '0.7rem', backgroundColor: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' },
 
-  // Header móvil
   mobileHeader: { display: 'none', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', backgroundColor: '#e8f0f7', borderBottom: '1px solid #d0dce8' },
   hamburger: { background: 'none', border: 'none', fontSize: '1.4rem', cursor: 'pointer', color: '#1a7a8a', padding: '0.2rem' },
   mobileLogo: { fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.2rem', color: '#1a1a1a', letterSpacing: '2px' },
 
-  // Header desktop
   main: { flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' },
   header: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 2rem', backgroundColor: '#e8f0f7', borderBottom: '1px solid #d0dce8' },
+
   searchWrap: { position: 'relative', flex: 1, maxWidth: '540px' },
   searchBar: { display: 'flex', alignItems: 'center', backgroundColor: '#ffffff', borderRadius: '20px', padding: '0.5rem 1.25rem', gap: '0.5rem', border: '1px solid #ddd', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', transition: 'border 0.2s' },
   searchBarOpen: { borderColor: '#2d9e6b', boxShadow: '0 0 0 3px rgba(45,158,107,0.1)', borderRadius: '20px 20px 0 0', borderBottom: '1px solid transparent' },
@@ -312,8 +397,30 @@ const st = {
   suggestLabel: { fontSize: '0.85rem', fontWeight: '600', color: '#1a1a1a' },
   suggestDesc: { fontSize: '0.72rem', color: '#888', marginTop: '0.15rem' },
   noResults: { padding: '0.9rem 1.25rem', fontSize: '0.82rem', color: '#aaa', textAlign: 'center' },
+
   headerRight: { display: 'flex', alignItems: 'center', gap: '1.25rem' },
-  bell: { fontSize: '1.3rem', cursor: 'pointer' },
+
+  // Campana
+  bellWrap: { position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center' },
+  bell: { fontSize: '1.3rem' },
+  notifBadge: { position: 'absolute', top: '-6px', right: '-6px', width: '18px', height: '18px', borderRadius: '50%', backgroundColor: '#e53e3e', color: '#fff', fontSize: '0.6rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+
+  // Panel notificaciones
+  notifPanel: { position: 'absolute', top: 'calc(100% + 12px)', right: 0, width: '340px', backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.15)', border: '1px solid #e0e8f0', zIndex: 1000, overflow: 'hidden' },
+  notifPanelHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem 0.75rem', borderBottom: '1px solid #f0f0f0' },
+  notifPanelTitulo: { fontSize: '0.88rem', fontWeight: '700', color: '#1a1a1a' },
+  notifLeerTodo: { background: 'none', border: 'none', color: '#2d9e6b', fontSize: '0.72rem', fontWeight: '600', cursor: 'pointer' },
+  notifLista: { maxHeight: '320px', overflowY: 'auto' },
+  notifVacia: { padding: '2rem', textAlign: 'center', fontSize: '0.82rem', color: '#aaa' },
+  notifItem: { display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.85rem 1.25rem', cursor: 'pointer', borderBottom: '1px solid #f5f5f5' },
+  notifItemLeida: { opacity: 0.5 },
+  notifIcono: { width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 },
+  notifTextoWrap: { flex: 1 },
+  notifTexto: { fontSize: '0.8rem', color: '#1a1a1a', lineHeight: '1.4' },
+  notifTiempo: { fontSize: '0.68rem', color: '#aaa', marginTop: '0.2rem' },
+  notifPunto: { width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#2d9e6b', flexShrink: 0, marginTop: '4px' },
+  notifFooter: { padding: '0.75rem', textAlign: 'center', fontSize: '0.78rem', color: '#2d9e6b', fontWeight: '600', cursor: 'pointer', borderTop: '1px solid #f0f0f0' },
+
   userInfo: { display: 'flex', alignItems: 'center', gap: '0.85rem' },
   userName: { fontSize: '0.95rem', fontWeight: '600', color: '#1a1a1a', textAlign: 'right' },
   userRole: { fontSize: '0.78rem', color: '#666', textAlign: 'right' },
