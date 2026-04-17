@@ -79,7 +79,7 @@ const m = {
   },
 };
 
-const TorneosPage = () => {
+const TournamentsPage = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [modal, setModal] = useState(null);
@@ -218,4 +218,4 @@ const s = {
   btnFinalizar: { padding: '0.45rem 1rem', border: 'none', borderRadius: '6px', backgroundColor: '#e0e8f0', color: '#555', fontSize: '0.78rem', cursor: 'pointer' },
 };
 
-export default TorneosPage;
+export default TournamentsPage;

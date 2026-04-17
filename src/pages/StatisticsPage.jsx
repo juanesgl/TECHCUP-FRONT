@@ -63,7 +63,7 @@ const DonutChart = ({ data }) => {
   );
 };
 
-const EstadisticasPage = ({menuType}) => {
+const StatisticsPage = ({menuType}) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [temporada] = useState('2026-1');
 
@@ -181,4 +181,4 @@ const s = {
   gLabel: { fontSize: '0.55rem', color: '#2d9e6b', fontWeight: '600' },
 };
 
-export default EstadisticasPage;
+export default StatisticsPage;

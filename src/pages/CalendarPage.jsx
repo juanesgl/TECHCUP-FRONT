@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 
-const CalendarioPage = ({menuType}) => {
+const CalendarPage = ({menuType}) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const eventos = [
@@ -247,4 +247,4 @@ const styles = {
   },
 };
 
-export default CalendarioPage;
+export default CalendarPage;

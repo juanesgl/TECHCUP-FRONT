@@ -27,9 +27,15 @@ const LoginPage = () => {
           role: response.role,
           token: response.token,
         }));
-        if (response.role === 'CAPTAIN') navigate('/capitan/dashboard');
-        else if (['ADMINISTRATOR','ADMIN','ORGANIZER'].includes(response.role)) navigate('/organizador/dashboard');
-        else navigate('/dashboard');
+        if (response.role === 'CAPTAIN') {
+          navigate('/capitan/dashboard');
+        } else if (['ADMINISTRATOR','ADMIN','ORGANIZER'].includes(response.role)) {
+          navigate('/organizador/dashboard');
+        } else if (response.role === 'REFEREE') {
+          navigate('/arbitro/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         setError(response.message || 'Credenciales incorrectas');
       }
