@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
 
-const SoportePage = ({menuType}) => {
+const SoportPage = ({menuType}) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const faqs = [
@@ -201,4 +201,4 @@ const styles = {
   },
 };
 
-export default SoportePage;
+export default SoportPage;

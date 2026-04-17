@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 
-const PagosPage = () => {
+const PaymentsPage = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [form, setForm] = useState({
     nombre: 'Juan',
@@ -366,4 +366,4 @@ const styles = {
   },
 };
 
-export default PagosPage;
+export default PaymentsPage;

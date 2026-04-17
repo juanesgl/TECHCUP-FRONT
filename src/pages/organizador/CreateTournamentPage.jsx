@@ -52,7 +52,7 @@ const m = {
   },
 };
 
-const CrearTorneoPage = () => {
+const CreateTournamentPage = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [showModal, setShowModal] = useState(false);
@@ -223,4 +223,4 @@ const s = {
   btnCrear: { padding: '0.65rem 1.5rem', border: 'none', borderRadius: '8px', backgroundColor: '#2d9e6b', color: '#ffffff', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer' },
 };
 
-export default CrearTorneoPage;
+export default CreateTournamentPage;

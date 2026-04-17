@@ -13,7 +13,7 @@ const eventos = [
   { id: 9, dia: 8, mes: 'MAY', diaSem: 'MIE', hora: '1PM A 3PM', nombre: 'Partido LOS PERICOS VS LOS PERRITOS', color: '#1a7a8a' },
 ];
 
-const CalendarioOrganizadorPage = () => {
+const CalendarOrganizerPage = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [expandido, setExpandido] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -155,4 +155,4 @@ const m = {
   btnConfirmar: { flex: 1, padding: '0.65rem', border: 'none', borderRadius: '8px', backgroundColor: '#2d9e6b', color: '#ffffff', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer' },
 };
 
-export default CalendarioOrganizadorPage;
+export default CalendarOrganizerPage;
