@@ -264,7 +264,15 @@ const KeysPage = ({ menuType }) => {
   );
 
   return (
-    <Layout userName={user.name} userRole={user.role} menuType={menuType}>
+    <Layout userName={user.name} userRole={
+      user.role === 'REFEREE'       ? 'Árbitro'
+      : user.role === 'CAPTAIN'     ? 'Capitán'
+      : user.role === 'ORGANIZER'   ? 'Organizador'
+      : user.role === 'ADMINISTRATOR' || user.role === 'ADMIN' ? 'Administrador'
+      : user.role === 'STUDENT'     ? 'Estudiante'
+      : user.role || 'Jugador'
+    } menuType={menuType}>
+
       <div style={st.container}>
         {/* Header */}
         <div style={st.titleRow}>
@@ -321,7 +329,6 @@ const KeysPage = ({ menuType }) => {
   );
 };
 
-/* ── Estilos ── */
 const st = {
   container: { display: 'flex', flexDirection: 'column', gap: '1.25rem', height: '100%' },
   titleRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' },

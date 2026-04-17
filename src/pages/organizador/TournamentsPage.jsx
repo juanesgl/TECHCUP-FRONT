@@ -4,7 +4,6 @@ import Layout from '../../components/Layout';
 
 const ModalConfirmar = ({ tipo, onCancel, onConfirm }) => {
   const esFinalizar = tipo === 'finalizar';
-
   return (
     <div style={m.overlay}>
       <div style={m.modal}>
@@ -12,31 +11,18 @@ const ModalConfirmar = ({ tipo, onCancel, onConfirm }) => {
           <span style={m.iconText}>?</span>
         </div>
         <h2 style={m.titulo}>
-          {esFinalizar
-            ? '¿Estás seguro de finalizar el torneo?'
-            : '¿Estás seguro de iniciar el torneo?'}
+          {esFinalizar ? '¿Estás seguro de finalizar el torneo?' : '¿Estás seguro de iniciar el torneo?'}
         </h2>
         <p style={m.desc}>
           {esFinalizar ? (
-            <>
-              Esta acción cambiará el estado a{' '}
-              <span style={{ color: '#e67e22', fontWeight: '600' }}>Finalizado</span> y cerrará las
-              inscripciones públicas. No podrás revertir el estado del borrador.
-            </>
+            <>Esta acción cambiará el estado a{' '}<span style={{ color: '#e67e22', fontWeight: '600' }}>Finalizado</span> y cerrará las inscripciones públicas. No podrás revertir el estado del borrador.</>
           ) : (
-            <>
-              Esta acción cambiará el estado a{' '}
-              <span style={{ color: '#2d9e6b', fontWeight: '600' }}>Activo</span> y habilitará las
-              inscripciones públicas. No podrás revertir el estado del borrador.
-            </>
+            <>Esta acción cambiará el estado a{' '}<span style={{ color: '#2d9e6b', fontWeight: '600' }}>Activo</span> y habilitará las inscripciones públicas. No podrás revertir el estado del borrador.</>
           )}
         </p>
         <div style={m.btns}>
           <button style={m.btnCancelar} onClick={onCancel}>Cancelar</button>
-          <button
-            style={{ ...m.btnConfirmar, backgroundColor: esFinalizar ? '#e67e22' : '#2d9e6b' }}
-            onClick={onConfirm}
-          >
+          <button style={{ ...m.btnConfirmar, backgroundColor: esFinalizar ? '#e67e22' : '#2d9e6b' }} onClick={onConfirm}>
             Confirmar
           </button>
         </div>
@@ -46,37 +32,15 @@ const ModalConfirmar = ({ tipo, onCancel, onConfirm }) => {
 };
 
 const m = {
-  overlay: {
-    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-    backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex',
-    alignItems: 'center', justifyContent: 'center', zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: '#ffffff', borderRadius: '12px',
-    padding: '2.25rem 2rem 1.75rem', width: '340px', textAlign: 'center',
-    boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
-  },
-  iconWrap: {
-    width: '52px', height: '52px', borderRadius: '50%',
-    backgroundColor: '#e8f5ee', display: 'flex',
-    alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.1rem',
-  },
+  overlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
+  modal: { backgroundColor: '#ffffff', borderRadius: '12px', padding: '2.25rem 2rem 1.75rem', width: '340px', textAlign: 'center', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' },
+  iconWrap: { width: '52px', height: '52px', borderRadius: '50%', backgroundColor: '#e8f5ee', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.1rem' },
   iconText: { fontSize: '1.5rem', fontWeight: '700', color: '#2d9e6b', lineHeight: 1 },
-  titulo: {
-    fontSize: '1rem', fontWeight: '700', color: '#1a1a1a',
-    marginBottom: '0.75rem', lineHeight: '1.4',
-  },
+  titulo: { fontSize: '1rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '0.75rem', lineHeight: '1.4' },
   desc: { fontSize: '0.82rem', color: '#666', marginBottom: '1.6rem', lineHeight: '1.6' },
   btns: { display: 'flex', gap: '0.75rem' },
-  btnCancelar: {
-    flex: 1, padding: '0.65rem', border: '1.5px solid #ddd', borderRadius: '8px',
-    backgroundColor: 'transparent', color: '#555', fontSize: '0.88rem',
-    fontWeight: '500', cursor: 'pointer',
-  },
-  btnConfirmar: {
-    flex: 1, padding: '0.65rem', border: 'none', borderRadius: '8px',
-    color: '#ffffff', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer',
-  },
+  btnCancelar: { flex: 1, padding: '0.65rem', border: '1.5px solid #ddd', borderRadius: '8px', backgroundColor: 'transparent', color: '#555', fontSize: '0.88rem', fontWeight: '500', cursor: 'pointer' },
+  btnConfirmar: { flex: 1, padding: '0.65rem', border: 'none', borderRadius: '8px', color: '#ffffff', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer' },
 };
 
 const TournamentsPage = () => {
@@ -85,28 +49,25 @@ const TournamentsPage = () => {
   const [modal, setModal] = useState(null);
 
   const kpis = [
-    { label: 'TOTAL', value: '5' },
+    { label: 'TOTAL',       value: '5' },
     { label: 'EN PROGRESO', value: '1' },
-    { label: 'BORRADORES', value: '2', highlight: true },
+    { label: 'BORRADORES',  value: '2', highlight: true },
     { label: 'FINALIZADOS', value: '2' },
   ];
 
   const activos = [
-    {
-      nombre: 'TEMPORADA 2026 – I SEMESTRE',
-      fechas: '15 Mar – 26 Jun 2026', equipos: '10 equipos', cancha: 'Cancha A y B',
-      progreso: 18, total: 32, estado: 'En progreso', tipo: 'activo',
-    },
-    {
-      nombre: 'LIGA JUNIORS 2026',
-      fechas: '01 May – 16 Jun 2026', equipos: '8 / 12 equipos inscritos', cancha: '',
-      progreso: 15, total: 100, estado: 'Activo', tipo: 'activo_sel',
-    },
+    { nombre: 'TEMPORADA 2026 – I SEMESTRE', fechas: '15 Mar – 26 Jun 2026', equipos: '10 equipos', cancha: 'Cancha A y B', progreso: 18, total: 32, estado: 'En progreso', tipo: 'activo' },
+    { nombre: 'LIGA JUNIORS 2026',           fechas: '01 May – 16 Jun 2026', equipos: '8 / 12 equipos inscritos', cancha: '', progreso: 15, total: 100, estado: 'Activo', tipo: 'activo_sel' },
   ];
 
   const borradores = [
     { nombre: 'COPA INTERNA 2026', fechas: '07 Ago – 10 Oct 2026', equipos: '0 / 11 equipos', estado: 'Borrador' },
   ];
+
+  const handleConfirmar = () => {
+    console.log('Acción confirmada:', modal.tipo);
+    setModal(null);
+  };
 
   return (
     <Layout userName={user.name} userRole="Organizador" menuType="organizador">
@@ -142,14 +103,14 @@ const TournamentsPage = () => {
             </div>
             <div style={s.progresoLabel}>Partidos</div>
             <div style={s.progresoBar}>
-              <div style={{ ...s.progresoFill, width: `${(t.progreso / t.total) * 100}%` }} />
+              <div style={{ ...s.progresoFill, width: `${Math.min((t.progreso / t.total) * 100, 100)}%` }} />
             </div>
             <div style={s.progresoNum}>{t.progreso} / {t.total}</div>
             <div style={s.torneoActions}>
               <button style={s.btnConsultar} onClick={() => navigate('/organizador/consultar-torneo')}>
                 📋 Consultar partidos
               </button>
-              <button style={s.btnFinalizar} onClick={() => setModal({ tipo: 'finalizar' })}>
+              <button style={s.btnFinalizar} onClick={() => setModal({ tipo: 'finalizar', nombre: t.nombre })}>
                 ■ Finalizar torneo
               </button>
             </div>
@@ -167,10 +128,13 @@ const TournamentsPage = () => {
             </div>
             <div style={s.torneoMeta}>📅 {t.fechas} &nbsp;·&nbsp; {t.equipos}</div>
             <div style={s.torneoActions}>
-              <button style={s.btnConsultar}>✏ Editar torneo</button>
+              {/* ✅ Editar torneo ahora navega a crear torneo */}
+              <button style={s.btnConsultar} onClick={() => navigate('/organizador/crear-torneo')}>
+                ✏ Editar torneo
+              </button>
               <button
                 style={{ ...s.btnFinalizar, backgroundColor: 'transparent', color: '#2d9e6b', border: '1px solid #2d9e6b' }}
-                onClick={() => setModal({ tipo: 'iniciar' })}
+                onClick={() => setModal({ tipo: 'iniciar', nombre: t.nombre })}
               >
                 ▶ Iniciar torneo
               </button>
@@ -183,7 +147,7 @@ const TournamentsPage = () => {
         <ModalConfirmar
           tipo={modal.tipo}
           onCancel={() => setModal(null)}
-          onConfirm={() => { console.log(modal.tipo); setModal(null); }}
+          onConfirm={handleConfirmar}
         />
       )}
     </Layout>
@@ -210,7 +174,7 @@ const s = {
   estadoBadge: { fontSize: '0.75rem', fontWeight: '600' },
   torneoMeta: { fontSize: '0.72rem', color: '#888', marginBottom: '0.6rem' },
   progresoLabel: { fontSize: '0.7rem', color: '#888', marginBottom: '0.25rem' },
-  progresoBar: { height: '6px', backgroundColor: '#e0e8f0', borderRadius: '3px', marginBottom: '0.25rem' },
+  progresoBar: { height: '6px', backgroundColor: '#e0e8f0', borderRadius: '3px', marginBottom: '0.25rem', overflow: 'hidden' },
   progresoFill: { height: '100%', backgroundColor: '#2d9e6b', borderRadius: '3px' },
   progresoNum: { fontSize: '0.7rem', color: '#888', marginBottom: '0.75rem', textAlign: 'right' },
   torneoActions: { display: 'flex', gap: '0.75rem' },

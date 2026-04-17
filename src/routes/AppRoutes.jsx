@@ -22,6 +22,7 @@ import PaymentsOrganizerPage from '../pages/organizador/PaymentsOrganizerPage';
 import RefereeDashboardPage from '../pages/arbitro/RefereeDashboardPage';
 import ViewAlignmentPage from '../pages/capitan/ViewAlignmentPage';
 import PerfilPage from '../pages/PerfilPage'
+import EditShieldPage from '../pages/capitan/EditShieldPage';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -70,6 +71,7 @@ const AppRoutes = () => {
         <Route path="/capitan/equipo" element={<PrivateRoute><ConsultTeamPage /></PrivateRoute>} />
         <Route path="/capitan/invitaciones" element={<PrivateRoute><InvitationsPage /></PrivateRoute>} />
         <Route path="/pagos" element={<PrivateRoute><PaymentsPage /></PrivateRoute>} />
+        <Route path="/capitan/editor-escudo" element={<PrivateRoute><EditShieldPage /></PrivateRoute>} />
 
         {/* Compartidas — el menuType se resuelve según el rol */}
         <Route path="/estadisticas" element={<SharedRoute Page={StatisticsPage} />} />

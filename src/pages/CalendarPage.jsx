@@ -49,7 +49,15 @@ const CalendarPage = ({menuType}) => {
   ];
 
   return (
-    <Layout userName={user.name} userRole={user.role} menuType={menuType}>
+    <Layout userName={user.name} userRole={
+      user.role === 'REFEREE'       ? 'Árbitro'
+      : user.role === 'CAPTAIN'     ? 'Capitán'
+      : user.role === 'ORGANIZER'   ? 'Organizador'
+      : user.role === 'ADMINISTRATOR' || user.role === 'ADMIN' ? 'Administrador'
+      : user.role === 'STUDENT'     ? 'Estudiante'
+      : user.role || 'Jugador'
+    } menuType={menuType}>
+
       <div style={styles.container}>
         {/* Título */}
         <h1 style={styles.title}>CALENDARIO 2026-1</h1>

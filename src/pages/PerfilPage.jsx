@@ -34,8 +34,12 @@ const PerfilPage = ({ menuType }) => {
   });
 
   const [guardado, setGuardado] = useState(false);
+  const [errors, setErrors]     = useState({});
 
-  const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
+  const set = (k, v) => {
+    setForm(p => ({ ...p, [k]: v }));
+    if (errors[k]) setErrors(p => ({ ...p, [k]: '' }));
+  };
 
   const togglePosicion = (id) => {
     set('posiciones', form.posiciones.includes(id)
@@ -50,6 +54,26 @@ const PerfilPage = ({ menuType }) => {
   };
 
   const handleGuardar = () => {
+    const e = {};
+    if (!form.nombre.trim())
+      e.nombre = 'El nombre es obligatorio';
+    if (!form.email.trim())
+      e.email = 'El correo es obligatorio';
+    else if (!/\S+@\S+\.\S+/.test(form.email))
+      e.email = 'Ingresa un correo válido';
+    if (!form.cedula.toString().trim())
+      e.cedula = 'La cédula es obligatoria';
+    else if (!/^\d+$/.test(form.cedula))
+      e.cedula = 'La cédula solo debe contener números';
+
+    if (!form.edad.toString().trim())
+      e.edad = 'La edad es obligatoria';
+    else if (isNaN(form.edad) || Number(form.edad) < 10 || Number(form.edad) > 80)
+      e.edad = 'Ingresa una edad válida entre 10 y 80';
+
+    setErrors(e);
+    if (Object.keys(e).length > 0) return;
+
     const updated = { ...user, name: form.nombre, email: form.email, foto: form.foto };
     localStorage.setItem('user', JSON.stringify(updated));
     setGuardado(true);
@@ -89,13 +113,15 @@ const PerfilPage = ({ menuType }) => {
         <div style={s.formGrid}>
           <div style={s.field}>
             <label style={s.label}>Nombre Completo</label>
-            <input style={s.input} value={form.nombre}
+            <input style={{ ...s.input, ...(errors.nombre ? s.inputError : {}) }} value={form.nombre}
               onChange={e => set('nombre', e.target.value)} />
+            {errors.nombre && <span style={s.errorMsg}>⚠ {errors.nombre}</span>}
           </div>
           <div style={s.field}>
             <label style={s.label}>EDAD</label>
-            <input style={s.input} type="number" value={form.edad}
+            <input style={{ ...s.input, ...(errors.edad ? s.inputError : {}) }} type="number" value={form.edad}
               onChange={e => set('edad', e.target.value)} />
+            {errors.edad && <span style={s.errorMsg}>⚠ {errors.edad}</span>}
           </div>
           <div style={s.field}>
             <label style={s.label}>Parentesco</label>
@@ -106,13 +132,15 @@ const PerfilPage = ({ menuType }) => {
           </div>
           <div style={s.field}>
             <label style={s.label}>Cédula</label>
-            <input style={s.input} value={form.cedula}
+            <input style={{ ...s.input, ...(errors.cedula ? s.inputError : {}) }} value={form.cedula}
               onChange={e => set('cedula', e.target.value)} />
+            {errors.cedula && <span style={s.errorMsg}>⚠ {errors.cedula}</span>}
           </div>
           <div style={{ ...s.field, gridColumn: '1 / -1' }}>
             <label style={s.label}>Email Address</label>
-            <input style={s.input} type="email" value={form.email}
+            <input style={{ ...s.input, ...(errors.email ? s.inputError : {}) }} type="email" value={form.email}
               onChange={e => set('email', e.target.value)} />
+            {errors.email && <span style={s.errorMsg}>⚠ {errors.email}</span>}
           </div>
         </div>
 
@@ -156,28 +184,23 @@ const PerfilPage = ({ menuType }) => {
 
 const s = {
   container: { display: 'flex', flexDirection: 'column', gap: '1.25rem' },
-
   headerCard: { display: 'flex', alignItems: 'flex-start', gap: '1.5rem', padding: '0.5rem 0' },
   fotoWrap: { position: 'relative', width: '90px', height: '90px', borderRadius: '50%', cursor: 'pointer', flexShrink: 0, overflow: 'hidden' },
   fotoImg: { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' },
   fotoPlaceholder: { width: '90px', height: '90px', borderRadius: '50%', backgroundColor: '#e8f0f7', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   fotoOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '30px', backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' },
-
   headerInfo: { display: 'flex', flexDirection: 'column', gap: '0.35rem', paddingTop: '0.25rem' },
   headerNombreRow: { display: 'flex', alignItems: 'center', gap: '0.75rem' },
   headerNombre: { fontSize: '1.3rem', fontWeight: '700', color: '#1a1a1a', margin: 0 },
   rolBadge: { backgroundColor: '#e8f5ee', color: '#2d9e6b', fontSize: '0.65rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', letterSpacing: '0.5px' },
   invitadoLabel: { fontSize: '0.78rem', color: '#888' },
   parentescoBadge: { display: 'inline-flex', alignItems: 'center', gap: '0.3rem', backgroundColor: '#e8f5ee', color: '#2d9e6b', fontSize: '0.75rem', fontWeight: '600', padding: '0.2rem 0.7rem', borderRadius: '20px', width: 'fit-content' },
-
   divider: { height: '1px', backgroundColor: '#f0f0f0' },
-
   formGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' },
   field: { display: 'flex', flexDirection: 'column', gap: '0.35rem' },
   label: { fontSize: '0.72rem', color: '#888', fontWeight: '600', letterSpacing: '0.3px' },
   input: { padding: '0.65rem 0.9rem', border: '1px solid #ddd', borderRadius: '8px', fontSize: '0.88rem', color: '#333', outline: 'none', backgroundColor: '#fff' },
   select: { padding: '0.65rem 0.9rem', border: '1px solid #ddd', borderRadius: '8px', fontSize: '0.88rem', color: '#333', outline: 'none', backgroundColor: '#fff', cursor: 'pointer' },
-
   posicionesLabel: { display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.88rem', fontWeight: '700', color: '#1a1a1a' },
   posicionesGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem' },
   posCard: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', padding: '0.85rem 0.5rem', border: '1.5px solid #e0e8f0', borderRadius: '10px', cursor: 'pointer', backgroundColor: '#fafafa' },
@@ -185,11 +208,12 @@ const s = {
   posIconoGrande: { fontSize: '1.5rem' },
   posLabel: { fontSize: '0.75rem', fontWeight: '600' },
   posDot: { width: '8px', height: '8px', borderRadius: '50%' },
-
   btnRow: { display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.75rem' },
   savedMsg: { fontSize: '0.82rem', color: '#2d9e6b', fontWeight: '600', marginRight: 'auto' },
   cancelBtn: { padding: '0.6rem 1.25rem', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: 'transparent', color: '#666', fontSize: '0.85rem', cursor: 'pointer' },
   guardarBtn: { padding: '0.6rem 1.5rem', backgroundColor: '#2d9e6b', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer' },
+  inputError: { borderColor: '#e53e3e', backgroundColor: '#fff5f5' },
+  errorMsg: { fontSize: '0.68rem', color: '#e53e3e', fontWeight: '500' },
 };
 
 export default PerfilPage;
