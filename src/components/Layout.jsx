@@ -2,21 +2,21 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const SEARCH_INDEX = [
-  { label: 'Mi alineación',        desc: 'Arma y gestiona tu formación',       path: '/capitan/alineacion',         role: 'capitan'     },
-  { label: 'Crear equipo',         desc: 'Registra y configura tu equipo',      path: '/capitan/crear-equipo',       role: 'capitan'     },
-  { label: 'Consultar equipo',     desc: 'Ver jugadores del equipo rival',      path: '/capitan/equipo',             role: 'capitan'     },
-  { label: 'Invitaciones',         desc: 'Gestiona invitaciones al equipo',     path: '/capitan/invitaciones',       role: 'capitan'     },
-  { label: 'Pagos',                desc: 'Comprobantes y pagos de inscripción', path: '/pagos',                      role: 'capitan'     },
-  { label: 'Torneos',              desc: 'Gestiona los torneos activos',        path: '/organizador/torneos',        role: 'organizador' },
-  { label: 'Crear torneo',         desc: 'Configura un nuevo torneo',           path: '/organizador/crear-torneo',   role: 'organizador' },
-  { label: 'Calendario',           desc: 'Calendario de partidos organizador',  path: '/organizador/calendario',     role: 'organizador' },
-  { label: 'Pagos organizador',    desc: 'Pagos y comprobantes del torneo',     path: '/organizador/pagos',          role: 'organizador' },
-  { label: 'Estadísticas',         desc: 'Centro de estadísticas del torneo',   path: '/estadisticas',               role: '*'           },
-  { label: 'Calendario',           desc: 'Ver calendario de partidos',          path: '/calendario',                 role: '*'           },
-  { label: 'Llaves',               desc: 'Cuadro de llaves del torneo',         path: '/llaves',                     role: '*'           },
-  { label: 'Soporte',              desc: 'Centro de ayuda y soporte',           path: '/soporte',                    role: '*'           },
-  { label: 'Configuración',        desc: 'Ajustes de tu cuenta',                path: '/configuracion',              role: '*'           },
-  { label: 'Mi perfil',            desc: 'Ver y editar tu perfil',              path: '/perfil',                     role: '*'           },
+  { label: 'Mi alineación',     desc: 'Arma y gestiona tu formación',       path: '/capitan/alineacion',       role: 'capitan'     },
+  { label: 'Crear equipo',      desc: 'Registra y configura tu equipo',      path: '/capitan/crear-equipo',     role: 'capitan'     },
+  { label: 'Consultar equipo',  desc: 'Ver jugadores del equipo rival',      path: '/capitan/equipo',           role: 'capitan'     },
+  { label: 'Invitaciones',      desc: 'Gestiona invitaciones al equipo',     path: '/capitan/invitaciones',     role: 'capitan'     },
+  { label: 'Pagos',             desc: 'Comprobantes y pagos de inscripción', path: '/pagos',                    role: 'capitan'     },
+  { label: 'Torneos',           desc: 'Gestiona los torneos activos',        path: '/organizador/torneos',      role: 'organizador' },
+  { label: 'Crear torneo',      desc: 'Configura un nuevo torneo',           path: '/organizador/crear-torneo', role: 'organizador' },
+  { label: 'Calendario',        desc: 'Calendario de partidos organizador',  path: '/organizador/calendario',   role: 'organizador' },
+  { label: 'Pagos organizador', desc: 'Pagos y comprobantes del torneo',     path: '/organizador/pagos',        role: 'organizador' },
+  { label: 'Estadísticas',      desc: 'Centro de estadísticas del torneo',   path: '/estadisticas',             role: '*'           },
+  { label: 'Calendario',        desc: 'Ver calendario de partidos',          path: '/calendario',               role: '*'           },
+  { label: 'Llaves',            desc: 'Cuadro de llaves del torneo',         path: '/llaves',                   role: '*'           },
+  { label: 'Soporte',           desc: 'Centro de ayuda y soporte',           path: '/soporte',                  role: '*'           },
+  { label: 'Configuración',     desc: 'Ajustes de tu cuenta',                path: '/configuracion',            role: '*'           },
+  { label: 'Mi perfil',         desc: 'Ver y editar tu perfil',              path: '/perfil',                   role: '*'           },
 ];
 
 const Layout = ({ children, userName, userRole, menuType }) => {
@@ -25,6 +25,7 @@ const Layout = ({ children, userName, userRole, menuType }) => {
   const fotoUsuario = JSON.parse(localStorage.getItem('user') || '{}').foto || null;
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
@@ -45,25 +46,28 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  // Cerrar sidebar al navegar en móvil
+  useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
+
   const menuItems = menuType === 'capitan' ? [
-    { label: 'Inicio',                path: '/capitan/dashboard',    icon: '⊞' },
-    { label: 'Crea tu equipo',        path: '/capitan/crear-equipo', icon: '📋' },
-    { label: 'Consultar Equipo',      path: '/capitan/equipo',       icon: '👥' },
-    { label: 'Centro de Estadísticas',path: '/estadisticas',         icon: '📊' },
-    { label: 'Calendario/Partidos',   path: '/calendario',           icon: '📅' },
-    { label: 'Llaves',                path: '/llaves',               icon: '🏆' },
+    { label: 'Inicio',                 path: '/capitan/dashboard',    icon: '⊞' },
+    { label: 'Crea tu equipo',         path: '/capitan/crear-equipo', icon: '📋' },
+    { label: 'Consultar Equipo',       path: '/capitan/equipo',       icon: '👥' },
+    { label: 'Centro de Estadísticas', path: '/estadisticas',         icon: '📊' },
+    { label: 'Calendario/Partidos',    path: '/calendario',           icon: '📅' },
+    { label: 'Llaves',                 path: '/llaves',               icon: '🏆' },
   ] : menuType === 'organizador' ? [
-    { label: 'Inicio',                path: '/organizador/dashboard',  icon: '⊞' },
-    { label: 'Torneo',                path: '/organizador/torneos',    icon: '📋' },
-    { label: 'Centro de Estadísticas',path: '/estadisticas',           icon: '📊' },
-    { label: 'Calendario/Partidos',   path: '/organizador/calendario', icon: '📅' },
-    { label: 'Llaves',                path: '/llaves',                 icon: '🏆' },
+    { label: 'Inicio',                 path: '/organizador/dashboard',  icon: '⊞' },
+    { label: 'Torneo',                 path: '/organizador/torneos',    icon: '📋' },
+    { label: 'Centro de Estadísticas', path: '/estadisticas',           icon: '📊' },
+    { label: 'Calendario/Partidos',    path: '/organizador/calendario', icon: '📅' },
+    { label: 'Llaves',                 path: '/llaves',                 icon: '🏆' },
   ] : [
-    { label: 'Inicio',                path: '/dashboard',    icon: '⊞' },
-    { label: 'Inscripciones',         path: '/inscripciones',icon: '📋' },
-    { label: 'Centro de Estadísticas',path: '/estadisticas', icon: '📊' },
-    { label: 'Calendario/Partidos',   path: '/calendario',   icon: '📅' },
-    { label: 'Llaves',                path: '/llaves',       icon: '🏆' },
+    { label: 'Inicio',                 path: '/dashboard',     icon: '⊞' },
+    { label: 'Inscripciones',          path: '/inscripciones', icon: '📋' },
+    { label: 'Centro de Estadísticas', path: '/estadisticas',  icon: '📊' },
+    { label: 'Calendario/Partidos',    path: '/calendario',    icon: '📅' },
+    { label: 'Llaves',                 path: '/llaves',        icon: '🏆' },
   ];
 
   const bottomItems = menuType === 'capitan' ? [
@@ -71,9 +75,9 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     { label: 'Pagos/Comprobantes', path: '/pagos',         icon: '💳' },
     { label: 'Configuración',      path: '/configuracion', icon: '⚙'  },
   ] : menuType === 'organizador' ? [
-    { label: 'Soporte',            path: '/soporte',             icon: '💬' },
-    { label: 'Pagos/Comprobantes', path: '/organizador/pagos',   icon: '💳' },
-    { label: 'Configuración',      path: '/configuracion',       icon: '⚙'  },
+    { label: 'Soporte',            path: '/soporte',           icon: '💬' },
+    { label: 'Pagos/Comprobantes', path: '/organizador/pagos', icon: '💳' },
+    { label: 'Configuración',      path: '/configuracion',     icon: '⚙'  },
   ] : [
     { label: 'Soporte',       path: '/soporte',       icon: '💬' },
     { label: 'Configuración', path: '/configuracion', icon: '⚙'  },
@@ -83,13 +87,53 @@ const Layout = ({ children, userName, userRole, menuType }) => {
     : menuType === 'organizador' ? '/organizador/dashboard'
     : '/dashboard';
 
-  const handleLogout = () => setShowLogoutModal(true);
-
   const confirmarLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/login');
   };
+
+  const SidebarContent = () => (
+    <>
+      <div style={st.logo} onClick={() => navigate(logoPath)}>
+        <img src="/logotipo.png" alt="TechCup" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+        <div style={st.logoTexts}>
+          <div style={st.logoTitle}>TECHCUP</div>
+          <div style={st.logoSub}>TORNEO UNIVERSITARIO</div>
+        </div>
+      </div>
+
+      <nav style={st.nav}>
+        {menuItems.map((item) => (
+          <div key={item.path} className="menu-item"
+            style={{ ...st.menuItem, ...(location.pathname === item.path ? st.menuItemActive : {}) }}
+            onClick={() => navigate(item.path)}>
+            <span style={st.menuIcon}>{item.icon}</span>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </nav>
+
+      <div style={st.divider} />
+
+      <nav style={st.nav}>
+        {bottomItems.map((item) => (
+          <div key={item.path} className="menu-item"
+            style={{ ...st.menuItem, ...(location.pathname === item.path ? st.menuItemActive : {}) }}
+            onClick={() => navigate(item.path)}>
+            <span style={st.menuIcon}>{item.icon}</span>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </nav>
+
+      <div style={st.logoutContainer}>
+        <button style={st.logoutBtn} onClick={() => setShowLogoutModal(true)}>
+          <span>→</span> Log out
+        </button>
+      </div>
+    </>
+  );
 
   return (
     <>
@@ -99,76 +143,68 @@ const Layout = ({ children, userName, userRole, menuType }) => {
         html, body, #root { height: 100%; overflow: hidden; }
         .menu-item:hover { background-color: rgba(255,255,255,0.15) !important; }
         .suggest-item:hover { background-color: #f0f7ff !important; }
+
+        @media (max-width: 768px) {
+          .sidebar-desktop { display: none !important; }
+          .mobile-header { display: flex !important; }
+          .desktop-search { display: none !important; }
+          .desktop-user { display: none !important; }
+          .content-area { padding: 1rem !important; }
+        }
+        @media (min-width: 769px) {
+          .mobile-header { display: none !important; }
+          .sidebar-mobile-overlay { display: none !important; }
+        }
       `}</style>
 
       <div style={st.page}>
-        {/* ── Sidebar ── */}
-        <div style={st.sidebar}>
-          <div style={st.logo} onClick={() => navigate(logoPath)}>
-            <img src="/logotipo.png" alt="TechCup"
-              style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
-            <div style={st.logoTexts}>
-              <div style={st.logoTitle}>TECHCUP</div>
-              <div style={st.logoSub}>TORNEO UNIVERSITARIO</div>
+        {/* ── Sidebar desktop ── */}
+        <div className="sidebar-desktop" style={st.sidebar}>
+          <SidebarContent />
+        </div>
+
+        {/* ── Overlay móvil ── */}
+        {sidebarOpen && (
+          <div className="sidebar-mobile-overlay" style={st.overlay}
+            onClick={() => setSidebarOpen(false)}>
+            <div style={st.sidebarMobile} onClick={e => e.stopPropagation()}>
+              <SidebarContent />
             </div>
           </div>
-
-          <nav style={st.nav}>
-            {menuItems.map((item) => (
-              <div key={item.path} className="menu-item"
-                style={{ ...st.menuItem, ...(location.pathname === item.path ? st.menuItemActive : {}) }}
-                onClick={() => navigate(item.path)}>
-                <span style={st.menuIcon}>{item.icon}</span>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </nav>
-
-          <div style={st.divider} />
-
-          <nav style={st.nav}>
-            {bottomItems.map((item) => (
-              <div key={item.path} className="menu-item"
-                style={{ ...st.menuItem, ...(location.pathname === item.path ? st.menuItemActive : {}) }}
-                onClick={() => navigate(item.path)}>
-                <span style={st.menuIcon}>{item.icon}</span>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </nav>
-
-          <div style={st.logoutContainer}>
-            <button style={st.logoutBtn} onClick={handleLogout}>
-              <span>→</span> Log out
-            </button>
-          </div>
-        </div>
+        )}
 
         {/* ── Main ── */}
         <div style={st.main}>
-          <div style={st.header}>
 
-            {/* Búsqueda */}
-            <div style={st.searchWrap} ref={searchRef}>
+          {/* Header móvil */}
+          <div className="mobile-header" style={st.mobileHeader}>
+            <button style={st.hamburger} onClick={() => setSidebarOpen(true)}>☰</button>
+            <span style={st.mobileLogo}>TECHCUP</span>
+            <div style={{ ...st.avatar, width: '34px', height: '34px', fontSize: '0.9rem', cursor: 'pointer' }}
+              onClick={() => navigate('/perfil')}>
+              {fotoUsuario
+                ? <img src={fotoUsuario} alt="Perfil" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                : userName ? userName.charAt(0).toUpperCase() : 'U'
+              }
+            </div>
+          </div>
+
+          {/* Header desktop */}
+          <div style={st.header}>
+            <div className="desktop-search" style={st.searchWrap} ref={searchRef}>
               <div style={{ ...st.searchBar, ...(showSuggestions && query ? st.searchBarOpen : {}) }}>
                 <span style={st.searchIcon}>🔍</span>
-                <input
-                  type="text"
-                  placeholder="Buscar pantallas, funciones..."
+                <input type="text" placeholder="Buscar pantallas, funciones..."
                   value={query}
                   onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
                   onFocus={() => setShowSuggestions(true)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && sugerencias.length > 0) {
-                      setQuery(''); setShowSuggestions(false); navigate(sugerencias[0].path);
-                    }
+                    if (e.key === 'Enter' && sugerencias.length > 0) { setQuery(''); setShowSuggestions(false); navigate(sugerencias[0].path); }
                     if (e.key === 'Escape') { setShowSuggestions(false); setQuery(''); }
                   }}
                   style={st.searchInput}
                 />
-                {query && (
-                  <button style={st.clearBtn} onClick={() => { setQuery(''); setShowSuggestions(false); }}>✕</button>
-                )}
+                {query && <button style={st.clearBtn} onClick={() => { setQuery(''); setShowSuggestions(false); }}>✕</button>}
               </div>
               {showSuggestions && sugerencias.length > 0 && (
                 <div style={st.dropdown}>
@@ -188,14 +224,9 @@ const Layout = ({ children, userName, userRole, menuType }) => {
               )}
             </div>
 
-            {/* Usuario */}
-            <div style={st.headerRight}>
+            <div className="desktop-user" style={st.headerRight}>
               <span style={st.bell}>🔔</span>
-              <div
-                style={{ ...st.userInfo, cursor: 'pointer' }}
-                onClick={() => navigate('/perfil')}
-                title="Ver mi perfil"
-              >
+              <div style={{ ...st.userInfo, cursor: 'pointer' }} onClick={() => navigate('/perfil')} title="Ver mi perfil">
                 <div>
                   <div style={st.userName}>{userName || 'Usuario'}</div>
                   <div style={st.userRole}>{userRole || 'Jugador'}</div>
@@ -210,26 +241,20 @@ const Layout = ({ children, userName, userRole, menuType }) => {
             </div>
           </div>
 
-          <div style={st.content}>{children}</div>
+          <div className="content-area" style={st.content}>{children}</div>
         </div>
       </div>
 
-      {/* ── Modal Log out ── */}
+      {/* ── Modal logout ── */}
       {showLogoutModal && (
-        <div style={st.overlay}>
+        <div style={st.logoutOverlay}>
           <div style={st.logoutModal}>
             <div style={st.logoutIcono}>👋</div>
             <h3 style={st.logoutTitulo}>¿Cerrar sesión?</h3>
-            <p style={st.logoutDesc}>
-              Tu sesión actual se cerrará y tendrás que volver a iniciar sesión para acceder.
-            </p>
+            <p style={st.logoutDesc}>Tu sesión actual se cerrará y tendrás que volver a iniciar sesión para acceder.</p>
             <div style={st.logoutBtns}>
-              <button style={st.btnCancelar} onClick={() => setShowLogoutModal(false)}>
-                Cancelar
-              </button>
-              <button style={st.btnConfirmar} onClick={confirmarLogout}>
-                Sí, cerrar sesión
-              </button>
+              <button style={st.btnCancelar} onClick={() => setShowLogoutModal(false)}>Cancelar</button>
+              <button style={st.btnConfirmar} onClick={confirmarLogout}>Sí, cerrar sesión</button>
             </div>
           </div>
         </div>
@@ -241,7 +266,13 @@ const Layout = ({ children, userName, userRole, menuType }) => {
 const st = {
   page: { display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', fontFamily: 'Inter, sans-serif', backgroundColor: '#e8f0f7' },
 
+  // Sidebar desktop
   sidebar: { width: '200px', minWidth: '200px', background: 'linear-gradient(180deg, #1a7a8a 0%, #2d9e6b 100%)', display: 'flex', flexDirection: 'column', padding: '1.25rem 0 1rem', height: '100vh', overflow: 'hidden' },
+
+  // Sidebar móvil
+  overlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex' },
+  sidebarMobile: { width: '240px', background: 'linear-gradient(180deg, #1a7a8a 0%, #2d9e6b 100%)', display: 'flex', flexDirection: 'column', padding: '1.25rem 0 1rem', height: '100vh', overflow: 'hidden' },
+
   logo: { display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0 1rem 1rem', cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,0.2)', marginBottom: '0.75rem' },
   logoTexts: { display: 'flex', flexDirection: 'column' },
   logoTitle: { color: '#ffffff', fontSize: '0.9rem', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px', lineHeight: '1.2' },
@@ -254,9 +285,14 @@ const st = {
   logoutContainer: { marginTop: 'auto', padding: '0 1.25rem 0.5rem' },
   logoutBtn: { width: '100%', padding: '0.7rem', backgroundColor: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' },
 
+  // Header móvil
+  mobileHeader: { display: 'none', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', backgroundColor: '#e8f0f7', borderBottom: '1px solid #d0dce8' },
+  hamburger: { background: 'none', border: 'none', fontSize: '1.4rem', cursor: 'pointer', color: '#1a7a8a', padding: '0.2rem' },
+  mobileLogo: { fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.2rem', color: '#1a1a1a', letterSpacing: '2px' },
+
+  // Header desktop
   main: { flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' },
   header: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 2rem', backgroundColor: '#e8f0f7', borderBottom: '1px solid #d0dce8' },
-
   searchWrap: { position: 'relative', flex: 1, maxWidth: '540px' },
   searchBar: { display: 'flex', alignItems: 'center', backgroundColor: '#ffffff', borderRadius: '20px', padding: '0.5rem 1.25rem', gap: '0.5rem', border: '1px solid #ddd', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', transition: 'border 0.2s' },
   searchBarOpen: { borderColor: '#2d9e6b', boxShadow: '0 0 0 3px rgba(45,158,107,0.1)', borderRadius: '20px 20px 0 0', borderBottom: '1px solid transparent' },
@@ -268,7 +304,6 @@ const st = {
   suggestLabel: { fontSize: '0.85rem', fontWeight: '600', color: '#1a1a1a' },
   suggestDesc: { fontSize: '0.72rem', color: '#888', marginTop: '0.15rem' },
   noResults: { padding: '0.9rem 1.25rem', fontSize: '0.82rem', color: '#aaa', textAlign: 'center' },
-
   headerRight: { display: 'flex', alignItems: 'center', gap: '1.25rem' },
   bell: { fontSize: '1.3rem', cursor: 'pointer' },
   userInfo: { display: 'flex', alignItems: 'center', gap: '0.85rem' },
@@ -278,10 +313,10 @@ const st = {
   content: { flex: 1, overflow: 'auto', padding: '1.5rem 2rem' },
 
   // Modal logout
-  overlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000 },
+  logoutOverlay: { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000 },
   logoutModal: { backgroundColor: '#ffffff', borderRadius: '16px', padding: '2rem', width: '340px', textAlign: 'center', boxShadow: '0 12px 40px rgba(0,0,0,0.18)', fontFamily: 'Inter, sans-serif' },
   logoutIcono: { width: '52px', height: '52px', borderRadius: '50%', backgroundColor: '#fff0f0', fontSize: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' },
-  logoutTitulo: { fontSize: '1rem', fontWeight: '400', color: '#1a1a1a', marginBottom: '0.6rem', fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.4rem', letterSpacing: '1px' },
+  logoutTitulo: { fontSize: '1.2rem', fontWeight: '400', color: '#1a1a1a', marginBottom: '0.6rem', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '1px' },
   logoutDesc: { fontSize: '0.82rem', color: '#666', marginBottom: '1.5rem', lineHeight: '1.6' },
   logoutBtns: { display: 'flex', gap: '0.75rem' },
   btnCancelar: { flex: 1, padding: '0.65rem', border: '1.5px solid #ddd', borderRadius: '8px', backgroundColor: 'transparent', color: '#555', fontSize: '0.88rem', fontWeight: '500', cursor: 'pointer' },
