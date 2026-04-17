@@ -11,18 +11,13 @@ const ConsultTeamPage = () => {
   const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
   const jugadores = [
-    { nombre: 'Dextarino',  posicion: 'Delantero', numero: 9,  edad: 24, goles: 12, partidos: 15 },
-    { nombre: 'La Rocka',   posicion: 'Defensa',   numero: 4,  edad: 28, goles: 1,  partidos: 14 },
-    { nombre: 'Al Pacino',  posicion: 'Medio',     numero: 8,  edad: 26, goles: 5,  partidos: 15 },
-    { nombre: 'Pitbull',    posicion: 'Delantero', numero: 10, edad: 22, goles: 8,  partidos: 13 },
-    { nombre: 'Jakie',      posicion: 'Medio',     numero: 6,  edad: 25, goles: 3,  partidos: 12 },
-    { nombre: 'Bautista',   posicion: 'Portero',   numero: 1,  edad: 30, goles: 0,  partidos: 15 },
-    { nombre: "Di'Caprio",  posicion: 'Defensa',   numero: 5,  edad: 27, goles: 2,  partidos: 11 },
-    { nombre: 'Kevin',      posicion: 'Defensa',   numero: 3,  edad: 23, goles: 0,  partidos: 10 },
-    { nombre: 'Doakes',     posicion: 'Defensa',   numero: 2,  edad: 29, goles: 1,  partidos: 14 },
-    { nombre: 'Josh',       posicion: 'Delantero', numero: 11, edad: 21, goles: 6,  partidos: 12 },
-    { nombre: 'Disel',      posicion: 'Medio',     numero: 7,  edad: 26, goles: 4,  partidos: 13 },
-    { nombre: 'Eminem',     posicion: 'Medio',     numero: 14, edad: 24, goles: 2,  partidos: 9  },
+    { nombre: 'Bautista',  posicion: 'Portero',   numero: 1,  edad: 24, goles: 0,  partidos: 7 },
+    { nombre: 'La Rocka',  posicion: 'Defensa',   numero: 4,  edad: 26, goles: 1,  partidos: 6 },
+    { nombre: "Di'Caprio", posicion: 'Defensa',   numero: 5,  edad: 25, goles: 0,  partidos: 7 },
+    { nombre: 'Al Pacino', posicion: 'Medio',     numero: 8,  edad: 27, goles: 3,  partidos: 7 },
+    { nombre: 'Disel',     posicion: 'Medio',     numero: 7,  edad: 23, goles: 2,  partidos: 5 },
+    { nombre: 'Dextarino', posicion: 'Delantero', numero: 9,  edad: 22, goles: 8,  partidos: 7 },
+    { nombre: 'Pitbull',   posicion: 'Delantero', numero: 10, edad: 21, goles: 5,  partidos: 6 },
   ];
 
   const posiciones = ['Todos', 'Portero', 'Defensa', 'Medio', 'Delantero'];
@@ -43,7 +38,7 @@ const ConsultTeamPage = () => {
         <div style={s.card}>
           <div style={s.cardHeader}>
             <h3 style={s.cardTitle}>Equipo rival</h3>
-            <span style={s.contador}>Jugadores: <strong>{jugadores.length}/18</strong></span>
+            <span style={s.contador}>Jugadores: <strong>{jugadores.length}/10</strong></span>
           </div>
 
           {/* Buscador */}

@@ -2,34 +2,29 @@ import { useState, useRef, useCallback } from 'react';
 import Layout from '../../components/Layout';
 
 const FORMACIONES = {
-  '4-3-3': [
+  '2-3-1': [
     { slot: 'POR', x: 6,  y: 50 },
-    { slot: 'DEF', x: 22, y: 20 }, { slot: 'DEF', x: 22, y: 40 },
-    { slot: 'DEF', x: 22, y: 60 }, { slot: 'DEF', x: 22, y: 80 },
-    { slot: 'MED', x: 45, y: 25 }, { slot: 'MED', x: 45, y: 50 }, { slot: 'MED', x: 45, y: 75 },
-    { slot: 'DEL', x: 70, y: 20 }, { slot: 'DEL', x: 70, y: 50 }, { slot: 'DEL', x: 70, y: 80 },
+    { slot: 'DEF', x: 25, y: 25 }, { slot: 'DEF', x: 25, y: 75 },
+    { slot: 'MED', x: 48, y: 20 }, { slot: 'MED', x: 48, y: 50 }, { slot: 'MED', x: 48, y: 80 },
+    { slot: 'DEL', x: 72, y: 50 },
   ],
-  '4-4-2': [
+  '3-2-1': [
     { slot: 'POR', x: 6,  y: 50 },
-    { slot: 'DEF', x: 22, y: 18 }, { slot: 'DEF', x: 22, y: 38 },
-    { slot: 'DEF', x: 22, y: 62 }, { slot: 'DEF', x: 22, y: 82 },
-    { slot: 'MED', x: 45, y: 18 }, { slot: 'MED', x: 45, y: 38 },
-    { slot: 'MED', x: 45, y: 62 }, { slot: 'MED', x: 45, y: 82 },
-    { slot: 'DEL', x: 70, y: 35 }, { slot: 'DEL', x: 70, y: 65 },
+    { slot: 'DEF', x: 25, y: 20 }, { slot: 'DEF', x: 25, y: 50 }, { slot: 'DEF', x: 25, y: 80 },
+    { slot: 'MED', x: 50, y: 33 }, { slot: 'MED', x: 50, y: 67 },
+    { slot: 'DEL', x: 74, y: 50 },
   ],
-  '3-5-2': [
+  '1-3-2': [
     { slot: 'POR', x: 6,  y: 50 },
-    { slot: 'DEF', x: 22, y: 25 }, { slot: 'DEF', x: 22, y: 50 }, { slot: 'DEF', x: 22, y: 75 },
-    { slot: 'MED', x: 42, y: 15 }, { slot: 'MED', x: 42, y: 33 }, { slot: 'MED', x: 42, y: 50 },
-    { slot: 'MED', x: 42, y: 67 }, { slot: 'MED', x: 42, y: 85 },
-    { slot: 'DEL', x: 70, y: 35 }, { slot: 'DEL', x: 70, y: 65 },
+    { slot: 'DEF', x: 28, y: 50 },
+    { slot: 'MED', x: 48, y: 20 }, { slot: 'MED', x: 48, y: 50 }, { slot: 'MED', x: 48, y: 80 },
+    { slot: 'DEL', x: 72, y: 33 }, { slot: 'DEL', x: 72, y: 67 },
   ],
-  '5-3-2': [
+  '2-2-2': [
     { slot: 'POR', x: 6,  y: 50 },
-    { slot: 'DEF', x: 20, y: 12 }, { slot: 'DEF', x: 20, y: 30 }, { slot: 'DEF', x: 20, y: 50 },
-    { slot: 'DEF', x: 20, y: 70 }, { slot: 'DEF', x: 20, y: 88 },
-    { slot: 'MED', x: 47, y: 25 }, { slot: 'MED', x: 47, y: 50 }, { slot: 'MED', x: 47, y: 75 },
-    { slot: 'DEL', x: 72, y: 35 }, { slot: 'DEL', x: 72, y: 65 },
+    { slot: 'DEF', x: 26, y: 30 }, { slot: 'DEF', x: 26, y: 70 },
+    { slot: 'MED', x: 50, y: 30 }, { slot: 'MED', x: 50, y: 70 },
+    { slot: 'DEL', x: 74, y: 30 }, { slot: 'DEL', x: 74, y: 70 },
   ],
 };
 
@@ -46,11 +41,7 @@ const AlignmentPage = () => {
     { id: 4, nombre: 'Chuck Norris', posicion: 'Defensa'   },
     { id: 5, nombre: 'Rambo',        posicion: 'Defensa'   },
     { id: 6, nombre: 'Sánchez',      posicion: 'Delantero' },
-    { id: 7, nombre: 'Martínez',     posicion: 'Mediocampo'},
-    { id: 8, nombre: 'Rodríguez',    posicion: 'Portero'   },
-    { id: 9, nombre: 'Ramírez',      posicion: 'Mediocampo'},
-    { id:10, nombre: 'Pérez',        posicion: 'Delantero' },
-    { id:11, nombre: 'López',        posicion: 'Defensa'   },
+    { id: 7, nombre: 'D. Alvarez',   posicion: 'Delantero' },
   ]);
 
   const [enCancha, setEnCancha] = useState([]);
@@ -239,7 +230,6 @@ const AlignmentPage = () => {
   );
 };
 
-/* ── Estilos ── */
 const st = {
   container: { display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   headerRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
